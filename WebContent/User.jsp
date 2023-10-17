@@ -23,6 +23,7 @@
                 <th>Password</th>
                 <th>Credit Card</th>
                 <th>Phone Number</th>
+                <th>Role</th>
                 <th>Client ID</th>
             </tr>
             <c:forEach var="user" items="${get_user}">
@@ -34,6 +35,7 @@
                     <td>"${user.password}"</td>
                     <td>"${user.creditCard}"</td>
                     <td>"${user.phoneNumber}"</td>
+                    <td>"${user.role}"</td>
                     <td>"${user.clientID}"</td>
                  </tr>
             </c:forEach>

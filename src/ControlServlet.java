@@ -129,13 +129,18 @@ public class ControlServlet extends HttpServlet {
 	   	 	String adress_street = request.getParameter("adress_street"); 
 	   	 	String adress_city = request.getParameter("adress_city"); 
 	   	 	String adress_state = request.getParameter("adress_state"); 
-	   	 	String adress_zip_code = request.getParameter("adress_zip_code"); 	   	 	
+	   	 	String adress_zip_code = request.getParameter("adress_zip_code");
+	   	 	String phoneNumber = request.getParameter("phoneNumber");
+	   	 	String role = request.getParameter("role");
 	   	 	String confirm = request.getParameter("confirmation");
+	   	 	int num = (int)(java.lang.Math.random() * 999999999) + 100000000;
 	   	 	
 	   	 	if (password.equals(confirm)) {
 	   	 		if (!userDAO.checkEmail(email)) {
+	   	 			while (userDAO.checkClientID(num))
+	   	 				num = (int)(java.lang.Math.random() * 999999999) + 100000000;
 		   	 		System.out.println("Registration Successful! Added to database");
-		            user users = new user(email,firstName, lastName, password, creditCard, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, "1000",0);
+		            user users = new user(email,firstName, lastName, password, creditCard, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, phoneNumber, role, num);
 		   	 		userDAO.insert(users);
 		   	 		response.sendRedirect("login.jsp");
 	   	 		}

@@ -11,6 +11,7 @@ public class user
 	    protected String adress_zip_code;
 	    protected String creditCard;
 	    protected String phoneNumber;
+	    protected String role;
 	    protected int clientID;
 	 
 	    //constructors
@@ -22,14 +23,14 @@ public class user
 	        this.email = email;
 	    }
 	    
-	    public user(String email,String firstName, String lastName, String password,String creditCard, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, String phoneNumber,  int clientID) 
+	    public user(String email,String firstName, String lastName, String password,String creditCard, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, String phoneNumber, String role,  int clientID) 
 	    {
-	    	this(firstName,lastName,password,creditCard, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,phoneNumber,clientID);
+	    	this(firstName,lastName,password,creditCard, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,phoneNumber, role,clientID);
 	    	this.email = email;
 	    }
 	 
 	
-	    public user(String firstName, String lastName, String password,String creditCard, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, String phoneNumber,  int clientID) 
+	    public user(String firstName, String lastName, String password,String creditCard, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, String phoneNumber, String role, int clientID) 
 	    {
 	    	this.firstName = firstName;
 	    	this.lastName = lastName;
@@ -41,6 +42,7 @@ public class user
 	        this.adress_state = adress_state;
 	        this.adress_zip_code = adress_zip_code;
 	        this.phoneNumber = phoneNumber;
+	        this.role = role;
 	        this.clientID = clientID;
 	    }
 	    
@@ -116,6 +118,13 @@ public class user
 	    }
 	    public void setPhoneNumber(String phoneNumber) {
 	    	this.phoneNumber = phoneNumber;
+	    }
+	    
+	    public String getRole() {
+	    	return role;
+	    }
+	    public void setRole(String role) {
+	    	this.role = role;
 	    }
 	    
 	    public int getClientID() {

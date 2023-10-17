@@ -98,10 +98,11 @@ public class userDAO
             String adress_state = resultSet.getString("adress_state"); 
             String adress_zip_code = resultSet.getString("adress_zip_code"); 
             String phoneNumber = resultSet.getString("phoneNumber");
+            String role = resultSet.getString("role");
             int clientID = resultSet.getInt("clientID");
 
              
-            user users = new user(email,firstName, lastName, password, creditCard, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, phoneNumber,clientID);
+            user users = new user(email,firstName, lastName, password, creditCard, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, phoneNumber,role,clientID);
             listUser.add(users);
         }        
         resultSet.close();
@@ -117,7 +118,7 @@ public class userDAO
     
     public void insert(user users) throws SQLException {
     	connect_func("root","pass1234");         
-		String sql = "insert into User(email, firstName, lastName, password, creditCard,adress_street_num, adress_street,adress_city,adress_state,adress_zip_code,phoneNumber,clientID) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,?)";
+		String sql = "insert into User(email, firstName, lastName, password, creditCard,adress_street_num, adress_street,adress_city,adress_state,adress_zip_code,phoneNumber,role,clientID) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,?)";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 			preparedStatement.setString(1, users.getEmail());
 			preparedStatement.setString(2, users.getFirstName());
@@ -129,8 +130,9 @@ public class userDAO
 			preparedStatement.setString(8, users.getAdress_city());		
 			preparedStatement.setString(9, users.getAdress_state());		
 			preparedStatement.setString(10, users.getAdress_zip_code());		
-			preparedStatement.setString(11, users.getPhoneNumber());		
-			preparedStatement.setInt(12, users.getClientID());		
+			preparedStatement.setString(11, users.getPhoneNumber());
+			preparedStatement.setString(12, users.getRole());
+			preparedStatement.setInt(13, users.getClientID());		
 
 		preparedStatement.executeUpdate();
         preparedStatement.close();
@@ -149,7 +151,7 @@ public class userDAO
     }
      
     public boolean update(user users) throws SQLException {
-        String sql = "update User set firstName=?, lastName =?,password = ?,creditCard=?,adress_street_num =?, adress_street=?,adress_city=?,adress_state=?,adress_zip_code=?, phoneNumber=?, clientID =? where clientID = ?";
+        String sql = "update User set firstName=?, lastName =?,password = ?,creditCard=?,adress_street_num =?, adress_street=?,adress_city=?,adress_state=?,adress_zip_code=?, phoneNumber=?, role=?, clientID =? where email = ?";
         connect_func();
         
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
@@ -163,8 +165,9 @@ public class userDAO
 		preparedStatement.setString(8, users.getAdress_city());		
 		preparedStatement.setString(9, users.getAdress_state());		
 		preparedStatement.setString(10, users.getAdress_zip_code());		
-		preparedStatement.setString(11, users.getPhoneNumber());		
-		preparedStatement.setInt(12, users.getClientID());
+		preparedStatement.setString(11, users.getPhoneNumber());	
+		preparedStatement.setString(12, users.getRole());
+		preparedStatement.setInt(13, users.getClientID());
          
         boolean rowUpdated = preparedStatement.executeUpdate() > 0;
         preparedStatement.close();
@@ -193,14 +196,33 @@ public class userDAO
             String adress_state = resultSet.getString("adress_state"); 
             String adress_zip_code = resultSet.getString("adress_zip_code"); 
             String phoneNumber = resultSet.getString("phoneNumber");
+            String role = resultSet.getString("role");
             int clientID = resultSet.getInt("clientID");
-            user = new user(email, firstName, lastName, password, creditCard, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,phoneNumber,clientID);
+            user = new user(email, firstName, lastName, password, creditCard, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,phoneNumber,role,clientID);
         }
          
         resultSet.close();
         statement.close();
          
         return user;
+    }
+    
+    public boolean checkClientID(int clientID) throws SQLException {
+    	boolean checks = false;
+    	String sql = "SELECT * FROM User WHERE clientID = ?";
+    	connect_func();
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setInt(1, clientID);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        
+        System.out.println(checks);	
+        
+        if (resultSet.next()) {
+        	checks = true;
+        }
+        
+        System.out.println(checks);
+    	return checks;
     }
     
     public boolean checkEmail(String email) throws SQLException {
@@ -283,22 +305,23 @@ public class userDAO
 					            "adress_city VARCHAR(20)," + 
 					            "adress_state VARCHAR(2),"+ 
 					            "adress_zip_code VARCHAR(5),"+ 
-					            "PhoneNumber VARCHAR(20),"+ 
+					            "phoneNumber VARCHAR(20),"+ 
+					            "role VARCHAR(20),"+
 					            "clientID CHAR(9),"+
-					            "PRIMARY KEY (clientID) "+"); ")
+					            "PRIMARY KEY (clientID) "+"); "),
         					};
-        String[] TUPLES = {("insert into User(email, firstName, lastName, password, creditCard, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, phoneNumber, clientID)"+
-        			"values ('susie@gmail.com', 'Susie ', 'Guzman', 'susie1234', '9247757853602826', '1234', 'whatever street', 'detroit', 'MI', '48202','(206) 342-8631', '1'),"+
-			    		 	"('don@gmail.com', 'Don', 'Cummings','don123', '2948195698661260', '1000', 'hi street', 'mama', 'MO', '12345','(717) 550-1675', '2'),"+
-			    	 	 	"('margarita@gmail.com', 'Margarita', 'Lawson','margarita1234', '1107102680322868', '1234', 'ivan street', 'tata','CO','12561','(248) 762-0356', '3'),"+
-			    		 	"('jo@gmail.com', 'Jo', 'Brady','jo1234', '4999052914074802', '3214','marko street', 'brat', 'DU', '54321','(253) 644-2182', '4'),"+
-			    		 	"('wallace@gmail.com', 'Wallace', 'Moore','wallace1234', '8273380994160065', '4500', 'frey street', 'sestra', 'MI', '48202','(212) 658-3916', '5'),"+
-			    		 	"('amelia@gmail.com', 'Amelia', 'Phillips','amelia1234', '3882709680822574', '1245', 'm8s street', 'baka', 'IL', '48000','(209) 300-2557', '6'),"+
-			    			"('sophie@gmail.com', 'Sophie', 'Pierce','sophie1234', '0107765678497569', '2468', 'yolos street', 'ides', 'CM', '24680','(252) 258-3799', '7'),"+
-			    			"('angelo@gmail.com', 'Angelo', 'Francis','angelo1234', '1486618095982323', '4680', 'egypt street', 'lolas', 'DT', '13579','(234) 109-6666', '8'),"+
-			    			"('rudy@gmail.com', 'Rudy', 'Smith','rudy1234', '0762867335481834', '1234', 'sign street', 'samo ne tu','MH', '09876','(201) 874-8593', '9'),"+
-			    			"('jeannette@gmail.com', 'Jeannette ', 'Stone','jeannette1234', '5965415930041349', '0981', 'snoop street', 'kojik', 'HW', '87654','(386) 461-0391', '10'),"+
-			    			"('root', 'default', 'default','pass1234', '0000000000000000', '0000', 'Default', 'Default', '0', '00000','(000) 000-0000','0');")
+        String[] TUPLES = {("insert into User(email, firstName, lastName, password, creditCard, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, phoneNumber, role, clientID)"+
+        			"values ('david@gmail.com', 'David', 'Smith', 'david1234', '9247757853602826', '1234', 'whatever street', 'detroit', 'MI', '48202','(206) 342-8631', 'David Smith', '773448499'),"+
+			    		 	"('don@gmail.com', 'Don', 'Cummings','don123', '2948195698661260', '1000', 'hi street', 'mama', 'MO', '12345','(717) 550-1675', 'client', '660591857'),"+
+			    	 	 	"('margarita@gmail.com', 'Margarita', 'Lawson','margarita1234', '1107102680322868', '1234', 'ivan street', 'tata','CO','12561','(248) 762-0356', 'client', '417925752'),"+
+			    		 	"('jo@gmail.com', 'Jo', 'Brady','jo1234', '4999052914074802', '3214','marko street', 'brat', 'DU', '54321','(253) 644-2182', 'client', '463977289'),"+
+			    		 	"('wallace@gmail.com', 'Wallace', 'Moore','wallace1234', '8273380994160065', '4500', 'frey street', 'sestra', 'MI', '48202','(212) 658-3916', 'client', '924493884'),"+
+			    		 	"('amelia@gmail.com', 'Amelia', 'Phillips','amelia1234', '3882709680822574', '1245', 'm8s street', 'baka', 'IL', '48000','(209) 300-2557', 'client', '628932745'),"+
+			    			"('sophie@gmail.com', 'Sophie', 'Pierce','sophie1234', '0107765678497569', '2468', 'yolos street', 'ides', 'CM', '24680','(252) 258-3799', 'client', '227354763'),"+
+			    			"('angelo@gmail.com', 'Angelo', 'Francis','angelo1234', '1486618095982323', '4680', 'egypt street', 'lolas', 'DT', '13579','(234) 109-6666', 'client', '512341745'),"+
+			    			"('rudy@gmail.com', 'Rudy', 'Smith','rudy1234', '0762867335481834', '1234', 'sign street', 'samo ne tu','MH', '09876','(201) 874-8593', 'client', '635213053'),"+
+			    			"('jeannette@gmail.com', 'Jeannette ', 'Stone','jeannette1234', '5965415930041349', '0981', 'snoop street', 'kojik', 'HW', '87654','(386) 461-0391', 'client', '757709486'),"+
+			    			"('root', 'default', 'default','pass1234', '0000000000000000', '0000', 'Default', 'Default', '0', '00000','(000) 000-0000','admin','000000000');")
 			    			};
         
         //for loop to put these in database

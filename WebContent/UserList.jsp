@@ -19,6 +19,7 @@
                 <th>Password</th>
                 <th>Credit Card</th>
                 <th>Phone Number</th>
+                <th>Role</th>
                 <th>Client ID</th>
 
             </tr>
@@ -31,6 +32,7 @@
                     <td><c:out value="${users.password}" /></td>
                     <td><c:out value="${users.creditCard}" /></td>
                     <td><c:out value="${users.phoneNumber}"/></td>
+                    <td><c:out value="${users.role}"/></td>
                     <td><c:out value="${users.clientID}" /></td>
                 </tr>
             </c:forEach>
