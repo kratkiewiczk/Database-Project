@@ -29,7 +29,7 @@
 				<tr>
 					<th>Address: </th>
 					<td align="center" colspan="3">
-						<input type="text" name="birthday" size="45" value="YYYY-MM-DD" onfocus="this.value=''">
+						<input type="text" name="birthday" size="45" value="Address" onfocus="this.value=''">
 					</td>
 				</tr>
 				<tr>
