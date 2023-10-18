@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Users</title>
 </head>
 
 <a href="login.jsp"target ="_self" > logout</a><br><br> 
@@ -42,6 +42,5 @@
           </table>
 	</div>
 <body>
-
 </body>
 </html>

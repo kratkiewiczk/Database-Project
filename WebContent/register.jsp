@@ -27,51 +27,27 @@
 					</td>
 				</tr>
 				<tr>
-					<th>Street Number: </th>
+					<th>Address: </th>
 					<td align="center" colspan="3">
-						<input type="text" name="adress_street_num" size="45" value="####" onfocus="this.value=''">
-					</td>
-				</tr>
-				<tr>
-					<th>Street: </th>
-					<td align="center" colspan="3">
-						<input type="text" name="adress_street" size="45" value="Example Street" onfocus="this.value=''">
-					</td>
-				</tr>
-				<tr>
-					<th>City: </th>
-					<td align="center" colspan="3">
-						<input type="text" name="adress_city" size="45" value="Example City" onfocus="this.value=''">
-					</td>
-				</tr>
-				<tr>
-					<th>State: </th>
-					<td align="center" colspan="3">
-						<input type="text" name="adress_state" size="45" value="State Initial (MI, IL, etc)" onfocus="this.value=''">
-					</td>
-				</tr>
-				<tr>
-					<th>Zip Code: </th>
-					<td align="center" colspan="3">
-						<input type="text" name="adress_zip_code" size="45" value="#####" onfocus="this.value=''">
+						<input type="text" name="birthday" size="45" value="Address" onfocus="this.value=''">
 					</td>
 				</tr>
 				<tr>
 					<th>Credit Card: </th>
 					<td align="center" colspan="3">
-						<input type="text" name="creditCard" size="45" value="Credit Card Number (16 digits)" onfocus="this.value=''">
+						<input type="text" name="creditCard" size="45" value="Credit Card Number" onfocus="this.value=''">
 					</td>
 				</tr>
 				<tr>
 					<th>Phone Number: </th>
 					<td align="center" colspan="3">
-						<input type="text" name="phoneNumber" size="45" value="(xxx) xxx-xxxx" onfocus="this.value=''">
+						<input type="text" name="phoneNumber" size="45" value="Phone Number" onfocus="this.value=''">
 					</td>
 				</tr>
 				<tr>
 					<th>Role: </th>
 					<td align="center" colspan="3">
-						<input type="text" name="role" size="45" value="User Role (client, admin, etc)" onfocus="this.value=''">
+						<input type="text" name="role" size="45" value="User Role" onfocus="this.value=''">
 					</td>
 				</tr>
 				<tr>
