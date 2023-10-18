@@ -92,7 +92,12 @@
 					</td>
 				</tr>
 			</table>
+			<div>
 			<a href="login.jsp" target="_self">Return to Login Page</a>
+			</div>
+			<div>
+			<a href="DavidSmith.jsp"target ="_self" > David Smith</a><br><br> 
+			</div>
 		</form>
 	</div>
 </body>

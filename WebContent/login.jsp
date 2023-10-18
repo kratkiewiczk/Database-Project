@@ -30,7 +30,12 @@
 					</td>
 				</tr>
 			</table>
-			<a href="register.jsp" target="_self">Registration</a>
+			<div>
+			<a href="register.jsp" target="_self" class="link">Registration</a>
+			</div>
+			<div>
+			<a href="DavidSmith.jsp" target="_self" class="link">David Smith</a>
+			</div>
 		</form>
 	</div>
 </body>

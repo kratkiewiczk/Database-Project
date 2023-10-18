@@ -8,8 +8,12 @@
 <meta charset="ISO-8859-1">
 <title>Users</title>
 </head>
-
+<div>
 <a href="login.jsp"target ="_self" > logout</a><br><br> 
+</div>
+<div>
+<a href="DavidSmith.jsp"target ="_self" > David Smith</a><br><br> 
+</div>
 
 <h1>List all users</h1>
     <div align="center">
