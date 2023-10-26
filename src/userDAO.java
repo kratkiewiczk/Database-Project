@@ -309,6 +309,10 @@ public class userDAO
 					            "role VARCHAR(20),"+
 					            "clientID CHAR(9),"+
 					            "PRIMARY KEY (clientID) "+"); "),
+					        
+					        
+	    
+					        
         					};
         String[] TUPLES = {("insert into User(email, firstName, lastName, password, creditCard, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, phoneNumber, role, clientID)"+
         			"values ('david@gmail.com', 'David', 'Smith', 'david1234', '9247757853602826', '1234', 'whatever street', 'detroit', 'MI', '48202','(206) 342-8631', 'David Smith', '773448499'),"+
@@ -322,6 +326,10 @@ public class userDAO
 			    			"('rudy@gmail.com', 'Rudy', 'Smith','rudy1234', '0762867335481834', '1234', 'sign street', 'samo ne tu','MH', '09876','(201) 874-8593', 'client', '635213053'),"+
 			    			"('jeannette@gmail.com', 'Jeannette ', 'Stone','jeannette1234', '5965415930041349', '0981', 'snoop street', 'kojik', 'HW', '87654','(386) 461-0391', 'client', '757709486'),"+
 			    			"('root', 'default', 'default','pass1234', '0000000000000000', '0000', 'Default', 'Default', '0', '00000','(000) 000-0000','admin','000000000');")
+            					
+            		  			
+        		  			
+        	
 			    			};
         
         //for loop to put these in database

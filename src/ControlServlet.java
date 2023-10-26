@@ -102,21 +102,23 @@ public class ControlServlet extends HttpServlet {
 	    	 
 	    	
 
-	    		  if (email.equals("root") && password.equals("pass1234")) {
+	    	 if (email.equals("root") && password.equals("pass1234")) {
 	    		    System.out.println("Login Successful!");
 	    		    session = request.getSession();
 	    		    session.setAttribute("username", email);
 	    		    rootPage(request, response, "");
-	    		  } else if (userDAO.isValid(email, password)) {
+	    		} else if (userDAO.isValid(email, password)) {
 	    		    currentUser = email;
-	    		    System.out.println("Login Successful! Redirecting");
+	    		    System.out.println("Login Successful! Redirecting to DavidSmith.jsp");
 	    		    request.getRequestDispatcher("DavidSmith.jsp").forward(request, response);
-	    		  } else if (email.equals("david@gmail.com") && password.equals("david1234")) {
-	    		    response.sendRedirect("DavidSmith.jsp");
-	    		  } else {
-	    		    request.setAttribute("loginStr", "Login Failed: Please check your credentials.");
-	    		    request.getRequestDispatcher("login.jsp").forward(request, response);
-	    		  }
+	    		} else if (email.equals("david@gmail.com") && password.equals("david1234")) {
+	    		    System.out.println("Login Successful! Redirecting to DavidSmith.jsp");
+	    		    request.getRequestDispatcher("DavidSmith.jsp").forward(request, response);
+	    		} else {
+	    		    System.out.println("Login Failed: Please check your credentials.");
+	    		    request.getRequestDispatcher("activitypage.jsp").forward(request, response);
+	    		}
+
 	    		
 
 	    	 
