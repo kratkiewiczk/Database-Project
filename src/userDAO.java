@@ -291,38 +291,41 @@ public class userDAO
         statement =  (Statement) connect.createStatement();
         
         String[] INITIAL = {"drop database if exists testdb; ",
-					        "create database testdb; ",
-					        "use testdb; ",
-					        "drop table if exists User; ",
-					        ("CREATE TABLE if not exists User( " +
-					            "email VARCHAR(50) NOT NULL, " + 
-					            "firstName VARCHAR(10) NOT NULL, " +
-					            "lastName VARCHAR(10) NOT NULL, " +
-					            "password VARCHAR(20) NOT NULL, " +
-					            "creditCard VARCHAR(16) NOT NULL, " +
-					            "adress_street_num VARCHAR(4) , "+ 
-					            "adress_street VARCHAR(30) , "+ 
-					            "adress_city VARCHAR(20)," + 
-					            "adress_state VARCHAR(2),"+ 
-					            "adress_zip_code VARCHAR(5),"+ 
-					            "phoneNumber VARCHAR(20),"+ 
-					            "role VARCHAR(20),"+
-					            "clientID CHAR(9),"+
-					            "PRIMARY KEY (clientID) "+"); "),
-        					};
-        String[] TUPLES = {("insert into User(email, firstName, lastName, password, creditCard, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, phoneNumber, role, clientID)"+
-        			"values ('david@gmail.com', 'David', 'Smith', 'david1234', '9247757853602826', '1234', 'whatever street', 'detroit', 'MI', '48202','(206) 342-8631', 'David Smith', '773448499'),"+
-			    		 	"('don@gmail.com', 'Don', 'Cummings','don123', '2948195698661260', '1000', 'hi street', 'mama', 'MO', '12345','(717) 550-1675', 'client', '660591857'),"+
-			    	 	 	"('margarita@gmail.com', 'Margarita', 'Lawson','margarita1234', '1107102680322868', '1234', 'ivan street', 'tata','CO','12561','(248) 762-0356', 'client', '417925752'),"+
-			    		 	"('jo@gmail.com', 'Jo', 'Brady','jo1234', '4999052914074802', '3214','marko street', 'brat', 'DU', '54321','(253) 644-2182', 'client', '463977289'),"+
-			    		 	"('wallace@gmail.com', 'Wallace', 'Moore','wallace1234', '8273380994160065', '4500', 'frey street', 'sestra', 'MI', '48202','(212) 658-3916', 'client', '924493884'),"+
-			    		 	"('amelia@gmail.com', 'Amelia', 'Phillips','amelia1234', '3882709680822574', '1245', 'm8s street', 'baka', 'IL', '48000','(209) 300-2557', 'client', '628932745'),"+
-			    			"('sophie@gmail.com', 'Sophie', 'Pierce','sophie1234', '0107765678497569', '2468', 'yolos street', 'ides', 'CM', '24680','(252) 258-3799', 'client', '227354763'),"+
-			    			"('angelo@gmail.com', 'Angelo', 'Francis','angelo1234', '1486618095982323', '4680', 'egypt street', 'lolas', 'DT', '13579','(234) 109-6666', 'client', '512341745'),"+
-			    			"('rudy@gmail.com', 'Rudy', 'Smith','rudy1234', '0762867335481834', '1234', 'sign street', 'samo ne tu','MH', '09876','(201) 874-8593', 'client', '635213053'),"+
-			    			"('jeannette@gmail.com', 'Jeannette ', 'Stone','jeannette1234', '5965415930041349', '0981', 'snoop street', 'kojik', 'HW', '87654','(386) 461-0391', 'client', '757709486'),"+
-			    			"('root', 'default', 'default','pass1234', '0000000000000000', '0000', 'Default', 'Default', '0', '00000','(000) 000-0000','admin','000000000');")
-			    			};
+        	    "create database testdb; ",
+        	    "use testdb; ",
+        	    "drop table if exists User; ",
+        	    ("CREATE TABLE if not exists User( " +
+        	        "email VARCHAR(50) NOT NULL, " + 
+        	        "firstName VARCHAR(10) NOT NULL, " +
+        	        "lastName VARCHAR(10) NOT NULL, " +
+        	        "password VARCHAR(20) NOT NULL, " +
+        	        "creditCard VARCHAR(16) NOT NULL, " +
+        	        "adress_street_num VARCHAR(4) , "+ 
+        	        "adress_street VARCHAR(30) , "+ 
+        	        "adress_city VARCHAR(20)," + 
+        	        "adress_state VARCHAR(2),"+ 
+        	        "adress_zip_code VARCHAR(5),"+ 
+        	        "phoneNumber VARCHAR(20),"+ 
+        	        "role VARCHAR(20),"+
+        	        "clientID CHAR(9),"+
+        	        "PRIMARY KEY (clientID) "+"); ")
+        	};
+
+        	String[] TUPLES = {
+        	    // User tuples
+        	    ("insert into User(email, firstName, lastName, password, creditCard, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, phoneNumber, role, clientID)"+
+        	        "values ('david@gmail.com', 'David', 'Smith', 'david1234', '9247757853602826', '1234', 'whatever street', 'detroit', 'MI', '48202','(206) 342-8631', 'David Smith', '773448499'),"+
+        	        "('don@gmail.com', 'Don', 'Cummings','don123', '2948195698661260', '1000', 'hi street', 'mama', 'MO', '12345','(717) 550-1675', 'client', '660591857'),"+
+        	        "('margarita@gmail.com', 'Margarita', 'Lawson','margarita1234', '1107102680322868', '1234', 'ivan street', 'tata','CO','12561','(248) 762-0356', 'client', '417925752'),"+
+        	        "('jo@gmail.com', 'Jo', 'Brady','jo1234', '4999052914074802', '3214','marko street', 'brat', 'DU', '54321','(253) 644-2182', 'client', '463977289'),"+
+        	        "('wallace@gmail.com', 'Wallace', 'Moore','wallace1234', '8273380994160065', '4500', 'frey street', 'sestra', 'MI', '48202','(212) 658-3916', 'client', '924493884'),"+
+        	        "('amelia@gmail.com', 'Amelia', 'Phillips','amelia1234', '3882709680822574', '1245', 'm8s street', 'baka', 'IL', '48000','(209) 300-2557', 'client', '628932745'),"+
+        	        "('sophie@gmail.com', 'Sophie', 'Pierce','sophie1234', '0107765678497569', '2468', 'yolos street', 'ides', 'CM', '24680','(252) 258-3799', 'client', '227354763'),"+
+        	        "('angelo@gmail.com', 'Angelo', 'Francis','angelo1234', '1486618095982323', '4680', 'egypt street', 'lolas', 'DT', '13579','(234) 109-6666', 'client', '512341745'),"+
+        	        "('rudy@gmail.com', 'Rudy', 'Smith','rudy1234', '0762867335481834', '1234', 'sign street', 'samo ne tu','MH', '09876','(201) 874-8593', 'client', '635213053'),"+
+        	        "('jeannette@gmail.com', 'Jeannette ', 'Stone','jeannette1234', '5965415930041349', '0981', 'snoop street', 'kojik', 'HW', '87654','(386) 461-0391', 'client', '757709486'),"+
+        	        "('root', 'default', 'default','pass1234', '0000000000000000', '0000', 'Default', 'Default', '0', '00000','(000) 000-0000','admin','000000000');")
+        			};
         
         //for loop to put these in database
         for (int i = 0; i < INITIAL.length; i++)
