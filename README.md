@@ -1,5 +1,5 @@
 # Database-Project
-#Instructions for downloading are:
+#Instructions for project part 1 are:
 #Download Eclipse 2023 for Web Developers for optimal results.
 #Download the latest version of Java
 #Install the server TomCat v9 
