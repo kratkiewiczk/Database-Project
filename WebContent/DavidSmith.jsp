@@ -18,4 +18,7 @@
 		 <a href="login.jsp"target ="_self" > logout</a><br><br> 
 		 </center>
 	</body>
+	<div>
+	<a href="form.jsp" target="_self" class="link">Request a quote</a>
+	</div>
 </html>

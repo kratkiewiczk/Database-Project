@@ -98,6 +98,9 @@
 			<div>
 			<a href="DavidSmith.jsp"target ="_self" > David Smith</a><br><br> 
 			</div>
+			<div>
+			<a href="form.jsp" target="_self" class="link">Request a quote</a>
+			</div>
 		</form>
 	</div>
 </body>

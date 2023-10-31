@@ -18,4 +18,8 @@
 		 <p> You can show all the transactions or other attributes here like balance, name of the user and others.</p>
 		 </center>
 	</body>
+	<div>
+	<a href="form.jsp" target="_self" class="link">Request a quote</a>
+	</div>
+	<div>
 </html>

@@ -36,6 +36,9 @@
 			<div>
 			<a href="DavidSmith.jsp" target="_self" class="link">David Smith</a>
 			</div>
+			<div>
+			<a href="form.jsp" target="_self" class="link">Request a quote</a>
+			</div>
 		</form>
 	</div>
 </body>
