@@ -18,7 +18,7 @@
 	<a href="login.jsp" target="_self" class="link">Login</a>
 	</div>
 	<div>
-	<a href="register.jsp" target="_self" class="link">Registration</a>
+	<a href="register.jsp" target="_self" class="link">Register</a>
 	</div>
 </body>
 </html>
