@@ -21,5 +21,6 @@
 	<div>
 	<a href="form.jsp" target="_self" class="link">Request a quote</a>
 	</div>
+	<a href="form.jsp" target="_self" class="link">Initial quote response pending</a>
 	<div>
 </html>

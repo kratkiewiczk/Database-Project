@@ -75,6 +75,8 @@ public class ControlServlet extends HttpServlet {
         	System.out.println(ex.getMessage());
 	    	}
 	    }
+	    
+	    
         	
 	    private void listUser(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {

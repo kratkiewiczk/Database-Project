@@ -7,7 +7,7 @@
 <title>Database Login</title>
 </head>
 <body>
- <center>	<h1> Welcome to the Database Login page </h1> </center>
+ <center>	<h1> Request a quote by logging in </h1> </center>
 	<div align="center">
 		<p> ${loginFailedStr} </p>
 		<form action="login" method="post">
@@ -37,7 +37,7 @@
 			<a href="DavidSmith.jsp" target="_self" class="link">David Smith</a>
 			</div>
 			<div>
-			<a href="requestquote.jsp" target="_self" class="link">Request a quote</a>
+			<a href="form.jsp" target="_self" class="link">Request a quote</a>
 			</div>
 		</form>
 	</div>
