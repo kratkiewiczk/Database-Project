@@ -47,8 +47,13 @@
             </tr>
         </table>
     </form>
+    
+    <a href="Clientresponses.jsp">
+        <button type="button">View all client responses</button>
+    </a>
 </body>
 </html>
+
 
 
 
