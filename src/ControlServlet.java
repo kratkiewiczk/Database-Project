@@ -94,6 +94,11 @@ public class ControlServlet extends HttpServlet {
 	    private void rootPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("root view");
 			request.setAttribute("listUser", userDAO.listAllUsers());
+			request.setAttribute("listMessage", userDAO.listAllMessages());
+			request.setAttribute("listTree", userDAO.listAllTrees());
+			request.setAttribute("listQuote", userDAO.listAllQuotes());
+			request.setAttribute("listOrd", userDAO.listAllOrds());
+			request.setAttribute("listBill", userDAO.listAllBills());
 	    	request.getRequestDispatcher("rootView.jsp").forward(request, response);
 	    }
 	    
@@ -109,16 +114,16 @@ public class ControlServlet extends HttpServlet {
 	    		    session = request.getSession();
 	    		    session.setAttribute("username", email);
 	    		    rootPage(request, response, "");
+	    	    } else if (email.equals("david@gmail.com") && password.equals("david1234")) {
+	    		    System.out.println("Login Successful! Redirecting to DavidSmith.jsp");
+	    		    request.getRequestDispatcher("DavidSmith.jsp").forward(request, response);
 	    		} else if (userDAO.isValid(email, password)) {
 	    		    currentUser = email;
 	    		    System.out.println("Login Successful! Redirecting to DavidSmith.jsp");
-	    		    request.getRequestDispatcher("DavidSmith.jsp").forward(request, response);
-	    		} else if (email.equals("david@gmail.com") && password.equals("david1234")) {
-	    		    System.out.println("Login Successful! Redirecting to DavidSmith.jsp");
-	    		    request.getRequestDispatcher("DavidSmith.jsp").forward(request, response);
+	    		    request.getRequestDispatcher("activitypage.jsp").forward(request, response);
 	    		} else {
 	    		    System.out.println("Login Failed: Please check your credentials.");
-	    		    request.getRequestDispatcher("activitypage.jsp").forward(request, response);
+	    		    request.getRequestDispatcher("login.jsp").forward(request, response);
 	    		}
 
 	    		

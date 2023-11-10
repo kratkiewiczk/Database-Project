@@ -110,6 +110,113 @@ public class userDAO
         return listUser;
     }
     
+    public List<message> listAllMessages() throws SQLException {
+        List<message> listMessage = new ArrayList<message>();        
+        String sql = "SELECT * FROM Message";      
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+            int messageID = resultSet.getInt("messageID");
+            String note = resultSet.getString("note");
+            int quoteID = resultSet.getInt("quoteID");
+            String email = resultSet.getString("email");
+             
+            message messages = new message(messageID, note, quoteID, email);
+            listMessage.add(messages);
+        }        
+        resultSet.close();
+        disconnect();        
+        return listMessage;
+    }    
+    
+    public List<tree> listAllTrees() throws SQLException {
+        List<tree> listTree = new ArrayList<tree>();        
+        String sql = "SELECT * FROM Tree";      
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+            int treeID = resultSet.getInt("treeID");
+            int height = resultSet.getInt("height");
+            String nearBuild = resultSet.getString("nearBuild");
+            int quoteID = resultSet.getInt("quoteID");
+             
+            tree trees = new tree(treeID, height, nearBuild, quoteID);
+            listTree.add(trees);
+        }        
+        resultSet.close();
+        disconnect();        
+        return listTree;
+    }  
+    
+    public List<quote> listAllQuotes() throws SQLException {
+        List<quote> listQuote = new ArrayList<quote>();        
+        String sql = "SELECT * FROM Quote";      
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+            int quoteID = resultSet.getInt("quoteID");
+            double price = resultSet.getDouble("price");
+            String timeWindow = resultSet.getString("timeWindow");
+            String stat = resultSet.getString("stat");
+            String email = resultSet.getString("email");
+             
+            quote quotes = new quote(quoteID, price, timeWindow, stat, email);
+            listQuote.add(quotes);
+        }        
+        resultSet.close();
+        disconnect();        
+        return listQuote;
+    }
+    
+    public List<ord> listAllOrds() throws SQLException {
+        List<ord> listOrd = new ArrayList<ord>();        
+        String sql = "SELECT * FROM Ord";      
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+            int ordID = resultSet.getInt("ordID");
+            String stat = resultSet.getString("stat");
+            int quoteID = resultSet.getInt("quoteID");
+            String email = resultSet.getString("email");
+             
+            ord ords = new ord(ordID, stat, quoteID, email);
+            listOrd.add(ords);
+        }        
+        resultSet.close();
+        disconnect();        
+        return listOrd;
+    }  
+    
+    public List<bill> listAllBills() throws SQLException {
+        List<bill> listBill = new ArrayList<bill>();        
+        String sql = "SELECT * FROM Bill";      
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+            int billID = resultSet.getInt("billID");
+            double amount = resultSet.getDouble("amount");
+            String stat = resultSet.getString("stat");
+            int ordID = resultSet.getInt("ordID");
+            String email = resultSet.getString("email");
+             
+            bill bills = new bill(billID, amount, stat, ordID, email);
+            listBill.add(bills);
+        }        
+        resultSet.close();
+        disconnect();        
+        return listBill;
+    }  
+    
     protected void disconnect() throws SQLException {
         if (connect != null && !connect.isClosed()) {
         	connect.close();
@@ -290,7 +397,7 @@ public class userDAO
     	connect_func();
         statement =  (Statement) connect.createStatement();
         
-        String[] INITIAL = {"drop database if exists testdb; ",
+        String[] INITIAL1 = {"drop database if exists testdb; ",
 					        "create database testdb; ",
 					        "use testdb; ",
 					        "drop table if exists User; ",
@@ -308,13 +415,59 @@ public class userDAO
 					            "phoneNumber VARCHAR(20),"+ 
 					            "role VARCHAR(20),"+
 					            "clientID CHAR(9),"+
-					            "PRIMARY KEY (clientID) "+"); "),
+					            "PRIMARY KEY (email) "+"); ")};
 					        
+        String[] INITIAL2 = {"drop table if exists Quote; ",
+					        ("CREATE TABLE if not exists Quote( " +
+					            "quoteID CHAR(15) NOT NULL, " + 
+					            "price DECIMAL(10, 2), " +
+					            "timeWindow VARCHAR(100), " +
+					            "stat VARCHAR(20), " +
+					            "email VARCHAR(50) NOT NULL, " +
+					            "PRIMARY KEY (quoteID), "+
+					            "FOREIGN KEY (email) REFERENCES User(email) "+"); ")};
 					        
+        String[] INITIAL3 = {"drop table if exists Message; ",
+					        ("CREATE TABLE if not exists Message( " +
+					            "messageID CHAR(15) NOT NULL, " + 
+					            "note VARCHAR(200), " +
+					            "quoteID CHAR(15) NOT NULL, " + 
+					            "email VARCHAR(50) NOT NULL, " + 
+					            "PRIMARY KEY (messageID), "+
+					            "FOREIGN KEY (quoteID) REFERENCES Quote(quoteID), "+
+					            "FOREIGN KEY (email) REFERENCES User(email) "+"); ")};
+					        	
+        String[] INITIAL4 = {"drop table if exists Tree; ",
+					        ("CREATE TABLE if not exists Tree( " +
+					            "treeID CHAR(15) NOT NULL, " + 
+					            "height VARCHAR(10) NOT NULL, " +
+					            "nearBuild VARCHAR(3) NOT NULL, " +
+					            "quoteID CHAR(15) NOT NULL, " +
+					            "PRIMARY KEY (treeID), "+
+					            "FOREIGN KEY (quoteID) REFERENCES Quote(quoteID) "+"); ")};
 	    
+        String[] INITIAL5 = {"drop table if exists Ord; ",
+					        ("CREATE TABLE if not exists Ord( " +
+					            "ordID CHAR(15) NOT NULL, " + 
+					            "stat VARCHAR(20), " +
+					            "quoteID CHAR(15) NOT NULL, " +
+					            "email VARCHAR(50) NOT NULL, " +
+					            "PRIMARY KEY (ordID), "+
+					            "FOREIGN KEY (quoteID) REFERENCES Quote(quoteID), "+
+					            "FOREIGN KEY (email) REFERENCES User(email) "+"); ")};
 					        
+        String[] INITIAL6 = {"drop table if exists Bill; ",
+					        ("CREATE TABLE if not exists Bill( " +
+					            "billID CHAR(15) NOT NULL, " + 
+					            "amount DECIMAL(10, 2), " +
+					            "stat VARCHAR(20), " +
+					            "ordID CHAR(15) NOT NULL, " +
+					            "email VARCHAR(50) NOT NULL, " +
+					            "PRIMARY KEY (billID), "+
+					            "FOREIGN KEY (ordID) REFERENCES Ord(ordID), "+
+					            "FOREIGN KEY (email) REFERENCES User(email) "+"); ")
         					};
-        String[] TUPLES = {("insert into User(email, firstName, lastName, password, creditCard, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, phoneNumber, role, clientID)"+
+        String[] TUPLES1 = {("insert into User(email, firstName, lastName, password, creditCard, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, phoneNumber, role, clientID)"+
         			"values ('david@gmail.com', 'David', 'Smith', 'david1234', '9247757853602826', '1234', 'whatever street', 'detroit', 'MI', '48202','(206) 342-8631', 'David Smith', '773448499'),"+
 			    		 	"('don@gmail.com', 'Don', 'Cummings','don123', '2948195698661260', '1000', 'hi street', 'mama', 'MO', '12345','(717) 550-1675', 'client', '660591857'),"+
 			    	 	 	"('margarita@gmail.com', 'Margarita', 'Lawson','margarita1234', '1107102680322868', '1234', 'ivan street', 'tata','CO','12561','(248) 762-0356', 'client', '417925752'),"+
@@ -325,18 +478,84 @@ public class userDAO
 			    			"('angelo@gmail.com', 'Angelo', 'Francis','angelo1234', '1486618095982323', '4680', 'egypt street', 'lolas', 'DT', '13579','(234) 109-6666', 'client', '512341745'),"+
 			    			"('rudy@gmail.com', 'Rudy', 'Smith','rudy1234', '0762867335481834', '1234', 'sign street', 'samo ne tu','MH', '09876','(201) 874-8593', 'client', '635213053'),"+
 			    			"('jeannette@gmail.com', 'Jeannette ', 'Stone','jeannette1234', '5965415930041349', '0981', 'snoop street', 'kojik', 'HW', '87654','(386) 461-0391', 'client', '757709486'),"+
-			    			"('root', 'default', 'default','pass1234', '0000000000000000', '0000', 'Default', 'Default', '0', '00000','(000) 000-0000','admin','000000000');")
-            					
-            		  			
+			    			"('root', 'default', 'default','pass1234', '0000000000000000', '0000', 'Default', 'Default', '0', '00000','(000) 000-0000','admin','000000000');")};
+            	
+
+       String[] TUPLES2 = {("insert into Quote(quoteID, price, timeWindow, stat, email)"+
+                	"values ('68640036', '0.00', '', 'In Progress', 'don@gmail.com'),"+
+                		    "('22568850', '400.00', 'November 10, 2023 12:00pm - 4:00pm', 'Accepted', 'margarita@gmail.com'),"+
+        			    	"('88402860', '1123.50', 'November 5, 2023 8:00am - 3:00pm', 'Accepted', 'jo@gmail.com'),"+
+        			   	 	"('18996146', '1417.50', 'November 1, 2023 9:00am - 3:00pm', 'Accepted', 'wallace@gmail.com'),"+
+        			   	 	"('96922139', '273.00', 'November 19, 2023 12:00pm - 3:00pm', 'In Progress', 'jo@gmail.com'),"+
+        			   	 	"('85329432', '0.00', '', 'In Progress', 'amelia@gmail.com'),"+
+        			   	 	"('74311516', '0.00', '', 'In Progress', 'sophie@gmail.com'),"+
+        		   		 	"('90773260', '0.00', '', 'Rejected', 'angelo@gmail.com'),"+
+        		   		 	"('40893246', '0.00', '', 'Rejected', 'rudy@gmail.com');")};
+        		
+        String[] TUPLES3 = {("insert into Message(messageID, note, quoteID, email)"+
+            		"values ('1', 'Requesting a quote for a tree', '68640036', 'don@gmail.com'),"+
+    			    		"('2', 'I would like a quote for my tree', '22568850', 'margarita@gmail.com'),"+
+    			    		"('3', 'Price should be lower, around 400', '22568850', 'margarita@gmail.com'),"+
+    			    		"('4', 'We can allow that', '22568850', 'david@gmail.com'),"+
+    			    		"('5', 'Requesting a quote for multiple trees to be cut down', '88402860', 'jo@gmail.com'),"+
+    			    	 	"('6', 'Need some very tall trees removed', '18996146', 'wallace@gmail.com'),"+
+    			    	 	"('7', 'Need a tree removed', '96922139', 'jo@gmail.com'),"+
+    			   		 	"('8', 'Would like some help with this tree', '85329432', 'amelia@gmail.com'),"+
+    			   		 	"('9', 'Tree removal around buildings', '74311516', 'sophie@gmail.com'),"+
+    			   		 	"('10', 'Tree removal in esidential area', '90773260', 'angelo@gmail.com'),"+
+    			   		 	"('11', 'Help with tree removal', '40893246', 'rudy@gmail.com'),"+
+        				    "('12', 'We are not allowed to do work in your are right now', '90773260', 'david@gmail.com'),"+
+        				    "('13', 'We can not work in your area at the moment', '40893246', 'david@gmail.com');")};
         		  			
-        	
+        String[] TUPLES4 = {("insert into Tree(treeID, height, nearBuild, quoteID)"+
+            		"values ('80802474', '25', 'yes', '68640036'),"+
+    			    		"('63365023', '40', 'no', '22568850'),"+
+    			    		"('11793601', '35', 'no', '88402860'),"+
+    			    		"('79718814', '40', 'no', '88402860'),"+
+    			    		"('40338681', '32', 'no', '88402860'),"+
+    			    	 	"('94023358', '65', 'no', '18996146'),"+
+    			    	 	"('47339106', '70', 'no', '18996146'),"+
+    			    	 	"('11841387', '55', 'yes', '96922139'),"+
+    			   		 	"('35257725', '38', 'no', '85329432'),"+
+    			   		 	"('13197890', '26', 'yes', '74311516'),"+
+    			   		 	"('61048581', '60', 'yes', '90773260'),"+
+    			   		 	"('40179016', '50', 'no', '40893246');")};
+        				   
+        String[] TUPLES5 = {("insert into Ord(ordID, stat, quoteID, email)"+
+            		"values ('38035457', 'In Progress', '22568850', 'margarita@gmail.com'),"+
+    			    		"('87174420', 'Done', '88402860', 'jo@gmail.com'),"+
+    			    	 	"('59818323', 'Done', '18996146', 'wallace@gmail.com');")};
+        				   
+        String[] TUPLES6 = {("insert into Bill(billID, amount, stat, ordID, email)"+
+            		"values ('30274897', '1123.50', 'Paid', '87174420', 'jo@gmail.com'),"+
+    			    	 	"('30384355', '1416.50', 'Unpaid', '59818323', 'wallace@gmail.com');")
 			    			};
         
         //for loop to put these in database
-        for (int i = 0; i < INITIAL.length; i++)
-        	statement.execute(INITIAL[i]);
-        for (int i = 0; i < TUPLES.length; i++)	
-        	statement.execute(TUPLES[i]);
+        for (int i = 0; i < INITIAL1.length; i++)
+        	statement.execute(INITIAL1[i]);
+        for (int i = 0; i < TUPLES1.length; i++)	
+        	statement.execute(TUPLES1[i]);
+        for (int i = 0; i < INITIAL2.length; i++)
+        	statement.execute(INITIAL2[i]);
+        for (int i = 0; i < TUPLES2.length; i++)	
+        	statement.execute(TUPLES2[i]);
+        for (int i = 0; i < INITIAL3.length; i++)
+        	statement.execute(INITIAL3[i]);
+        for (int i = 0; i < TUPLES3.length; i++)	
+        	statement.execute(TUPLES3[i]);
+        for (int i = 0; i < INITIAL4.length; i++)
+        	statement.execute(INITIAL4[i]);
+        for (int i = 0; i < TUPLES4.length; i++)	
+        	statement.execute(TUPLES4[i]);
+        for (int i = 0; i < INITIAL5.length; i++)
+        	statement.execute(INITIAL5[i]);
+        for (int i = 0; i < TUPLES5.length; i++)	
+        	statement.execute(TUPLES5[i]);
+        for (int i = 0; i < INITIAL6.length; i++)
+        	statement.execute(INITIAL6[i]);
+        for (int i = 0; i < TUPLES6.length; i++)	
+        	statement.execute(TUPLES6[i]);
         disconnect();
     }
     
