@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page import="java.util.*, java.math.BigDecimal, java.util.Random" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,13 +34,23 @@
             </td>
         </tr>
     </table>
-    			<a href="login.jsp" target="_self">Return to Login Page</a>
-			</div>
-			<div>
-			<a href="DavidSmith.jsp"target ="_self" > David Smith</a><br><br> 
-			</div>
+    <a href="login.jsp" target="_self">Return to Login Page</a>
+    </div>
+    <div>
+        <a href="DavidSmith.jsp" target="_self">David Smith</a><br><br> 
+    </div>
+
+    <%
+    
+        Random random = new Random();
+        BigDecimal randomBillAmount = new BigDecimal(random.nextDouble() * 100); 
+
+        session.setAttribute("Bill", randomBillAmount);
+    %>
 </body>
 </html>
+
+
 
 
 

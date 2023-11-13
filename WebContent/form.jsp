@@ -76,7 +76,9 @@
     <div>
         <h2>David Smith Response:</h2>
         <p><%= (session.getAttribute("responseStatus") != null) ? "David Smith response to your quote: " + session.getAttribute("responseStatus") : "" %></p>
+        <p>Bill: <%= request.getParameter("billAmount") %></p>
     </div>
+     <button type="submit" name="submit" value="respond">Pay</button>
 </body>
 </html>
 
