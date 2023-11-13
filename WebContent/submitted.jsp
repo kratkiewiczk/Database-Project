@@ -8,7 +8,7 @@
 </head>
 
 <body>
-<h2>You have submitted your initial quote to the client</h2>
+<h2>Submitted</h2>
 			<div>
 			<a href="login.jsp" target="_self">Return to Login Page</a>
 			</div>

@@ -22,11 +22,11 @@
             <td></td>
             <td></td>
             <td>
-                <form action="form.jsp" method="post">
+                <form action="submitted.jsp" method="post">
                     <input type="hidden" name="responseStatus" value="accepted">
                     <button type="submit" name="submit" value="accept">Accept</button>
                 </form>
-                <form action="form.jsp" method="post">
+                <form action="submitted.jsp" method="post">
                     <input type="hidden" name="responseStatus" value="quit">
                     <button type="submit" name="submit" value="Decline/quit">Decline/Quit</button>
                 </form>
