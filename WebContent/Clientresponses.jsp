@@ -22,19 +22,19 @@
             <td></td>
             <td></td>
             <td>
-                <p>Client's Initial Quote Request</p>
-                <button type="button" onclick="updateStatus('accepted')">Accept</button>
-                <button type="button" onclick="updateStatus('Quit')">Quit</button>
+                <form action="form.jsp" method="post">
+                    <input type="hidden" name="responseStatus" value="accepted">
+                    <button type="submit" name="submit" value="accept">Accept</button>
+                </form>
+                <form action="form.jsp" method="post">
+                    <input type="hidden" name="responseStatus" value="quit">
+                    <button type="submit" name="submit" value="Decline/quit">Decline/Quit</button>
+                </form>
             </td>
         </tr>
     </table>
-
-    <script>
-        function updateStatus(status) {
-            var statusCell = document.querySelector("td p");
-            statusCell.innerHTML = "Client's Initial Quote Request - " + status.charAt(0).toUpperCase() + status.slice(1);
-        }
-    </script>
 </body>
 </html>
+
+
 

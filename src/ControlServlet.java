@@ -32,6 +32,8 @@ public class ControlServlet extends HttpServlet {
 	    	
 	    }
 	    
+	    
+	    
 	    public void init()
 	    {
 	    	userDAO = new userDAO();
@@ -77,6 +79,7 @@ public class ControlServlet extends HttpServlet {
 	    }
 	    
 	    
+	    
         	
 	    private void listUser(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
@@ -108,24 +111,61 @@ public class ControlServlet extends HttpServlet {
 	    	 String password = request.getParameter("password");
 	    	 
 	    	
-
 	    	 if (email.equals("root") && password.equals("pass1234")) {
 	    		    System.out.println("Login Successful!");
 	    		    session = request.getSession();
 	    		    session.setAttribute("username", email);
 	    		    rootPage(request, response, "");
-	    	    } else if (email.equals("david@gmail.com") && password.equals("david1234")) {
+	    		} else if (email.equals("david@gmail.com") && password.equals("david1234")) {
 	    		    System.out.println("Login Successful! Redirecting to DavidSmith.jsp");
 	    		    request.getRequestDispatcher("DavidSmith.jsp").forward(request, response);
+	    		} else if (email.equals("amelia@gmail.com") && password.equals("amelia1234")) {
+	    		    System.out.println("Login Successful! Redirecting to form.jsp");
+	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
+	    		} else if (email.equals("angelo@gmail.com") && password.equals("angelo1234")) {
+	    		    System.out.println("Login Successful! Redirecting to form.jsp");
+	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
+	    		} else if (email.equals("don@gmail.com") && password.equals("don123")) {
+	    		    System.out.println("Login Successful! Redirecting to don.jsp");
+	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
+	    		} else if (email.equals("jeannette@gmail.com") && password.equals("jeannette1234")) {
+	    		    System.out.println("Login Successful! Redirecting to jeannette.jsp");
+	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
+	    		} else if (email.equals("jo@gmail.com") && password.equals("jo1234")) {
+	    		    System.out.println("Login Successful! Redirecting to jo.jsp");
+	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
+	    		} else if (email.equals("margarita@gmail.com") && password.equals("margarita1234")) {
+	    		    System.out.println("Login Successful! Redirecting to margarita.jsp");
+	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
+	    		} else if (email.equals("rudy@gmail.com") && password.equals("rudy1234")) {
+	    		    System.out.println("Login Successful! Redirecting to rudy.jsp");
+	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
+	    		} else if (email.equals("sophie@gmail.com") && password.equals("sophie1234")) {
+	    		    System.out.println("Login Successful! Redirecting to sophie.jsp");
+	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
+	    		} else if (email.equals("wallace@gmail.com") && password.equals("wallace1234")) {
+	    		    System.out.println("Login Successful! Redirecting to wallace.jsp");
+	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
 	    		} else if (userDAO.isValid(email, password)) {
 	    		    currentUser = email;
-	    		    System.out.println("Login Successful! Redirecting to DavidSmith.jsp");
+	    		    System.out.println("Login Successful! Redirecting to activitypage.jsp");
 	    		    request.getRequestDispatcher("activitypage.jsp").forward(request, response);
 	    		} else {
 	    		    System.out.println("Login Failed: Please check your credentials.");
 	    		    request.getRequestDispatcher("login.jsp").forward(request, response);
 	    		}
 
+
+	    	 
+	    	 if (userDAO.isValid(email, password)) {
+	    		    currentUser = email;
+	    		    System.out.println("Login Successful! Redirecting to activitypage.jsp");
+	    		    session.setAttribute("username", currentUser); 
+	    		    request.getRequestDispatcher("activitypage.jsp").forward(request, response);
+	    		} else {
+	    		    System.out.println("Login Failed: Please check your credentials.");
+	    		    request.getRequestDispatcher("login.jsp").forward(request, response);
+	    		}
 	    		
 
 	    	 
@@ -201,6 +241,16 @@ public class ControlServlet extends HttpServlet {
 	    
 	    
 }
+	    
+
+	     
+        
+	    
+	    
+	    
+	    
+	    
+
 	        
 	        
 	    

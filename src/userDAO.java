@@ -504,7 +504,7 @@ public class userDAO
     			   		 	"('9', 'Tree removal around buildings', '74311516', 'sophie@gmail.com'),"+
     			   		 	"('10', 'Tree removal in esidential area', '90773260', 'angelo@gmail.com'),"+
     			   		 	"('11', 'Help with tree removal', '40893246', 'rudy@gmail.com'),"+
-        				    "('12', 'We are not allowed to do work in your are right now', '90773260', 'david@gmail.com'),"+
+        				    "('12', 'We are not allowed to do work in your area right now', '90773260', 'david@gmail.com'),"+
         				    "('13', 'We can not work in your area at the moment', '40893246', 'david@gmail.com');")};
         		  			
         String[] TUPLES4 = {("insert into Tree(treeID, height, nearBuild, quoteID)"+
@@ -570,3 +570,13 @@ public class userDAO
 	
 
 }
+    
+   
+    
+    
+    
+    
+    
+	
+	
+
