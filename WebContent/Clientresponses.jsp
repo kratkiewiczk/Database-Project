@@ -12,15 +12,15 @@
         <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>Address</th>
             <th>Phone Number</th>
+            <th>Quote Request</th>
             <th>Actions</th>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td><%= request.getParameter("name") %></td>
+            <td><%= request.getParameter("email") %></td>
+            <td><%= request.getParameter("phone") %></td>
+            <td><%= request.getParameter("description") %></td>
             <td>
                 <form action="submitted.jsp" method="post">
                     <input type="hidden" name="responseStatus" value="accepted">
@@ -33,8 +33,14 @@
             </td>
         </tr>
     </table>
+    			<a href="login.jsp" target="_self">Return to Login Page</a>
+			</div>
+			<div>
+			<a href="DavidSmith.jsp"target ="_self" > David Smith</a><br><br> 
+			</div>
 </body>
 </html>
+
 
 
 

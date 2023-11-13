@@ -23,19 +23,35 @@
         if (submittedQuote != null && !submittedQuote.isEmpty()) {
             session.setAttribute("submittedQuote", submittedQuote);
         }
+
+        String name = request.getParameter("name");
+        if (name != null && !name.isEmpty()) {
+            session.setAttribute("name", name);
+        }
+
+        String email = request.getParameter("email");
+        if (email != null && !email.isEmpty()) {
+            session.setAttribute("email", email);
+        }
+
+        String phone = request.getParameter("phone");
+        if (phone != null && !phone.isEmpty()) {
+            session.setAttribute("phone", phone);
+        }
+
         String responseStatus = request.getParameter("responseStatus");
         if (responseStatus != null && !responseStatus.isEmpty()) {
             session.setAttribute("responseStatus", responseStatus);
         }
     %>
 
-    <form action="form.jsp" method="post">
+    <form action="submitted.jsp" method="post">
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br>
+        <input type="text" id="name" name="name" required value="<%= (session.getAttribute("name") != null) ? session.getAttribute("name") : "" %>"><br>
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
+        <input type="email" id="email" name="email" required value="<%= (session.getAttribute("email") != null) ? session.getAttribute("email") : "" %>"><br>
         <label for="phone">Phone:</label>
-        <input type="tel" id="phone" name="phone"><br>
+        <input type="tel" id="phone" name="phone" value="<%= (session.getAttribute("phone") != null) ? session.getAttribute("phone") : "" %>"><br>
         <label for="description">Quote Request:</label>
         <textarea id="description" name="description" required><%= (session.getAttribute("submittedQuote") != null) ? session.getAttribute("submittedQuote") : "" %></textarea><br>
         <input type="submit" value="Submit Quote Request">
@@ -63,6 +79,8 @@
     </div>
 </body>
 </html>
+
+
 
 
 
