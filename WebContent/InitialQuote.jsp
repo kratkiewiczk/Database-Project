@@ -8,13 +8,20 @@
 <body>
     <h2>Submit Initial Quote Request to Client</h2>
 
+    <%
+        String email = request.getParameter("email");
+    %>
+
     <form action="submitted.jsp" method="post">
+        <p>Email: <%= email %></p>
+        <p>Please enter your initial quote:</p>
         <textarea name="initialQuote" rows="4" cols="50"></textarea>
         <br>
         <button type="submit" name="submit" value="respond">Submit Initial Quote to Client</button>
     </form>
 </body>
 </html>
+
 
 
 

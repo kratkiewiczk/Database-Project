@@ -43,7 +43,13 @@
         if (responseStatus != null && !responseStatus.isEmpty()) {
             session.setAttribute("responseStatus", responseStatus);
         }
+        
+   
+        
+    
+
     %>
+    
 
     <form action="submitted.jsp" method="post">
         <label for="name">Name:</label>
