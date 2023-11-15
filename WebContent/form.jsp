@@ -77,23 +77,17 @@
         <textarea id="description" name="description" required><%= (submittedQuote != null) ? submittedQuote : "" %></textarea><br>
         <input type="submit" value="Submit response">
     </form>
-<h2>Submit initial Quote Request</h2>
-    <form action="submitted.jsp" method="post">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required value="<%= (initialName != null) ? initialName : "" %>"><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required value="<%= (initialEmail != null) ? initialEmail : "" %>"><br>
-        <label for="phone">Phone:</label>
-        <input type="tel" id="phone" name="phone" value="<%= (initialPhone != null) ? initialPhone : "" %>"><br>
-        <label for="initialQuote">Quote Request:</label>
-        <textarea id="initialQuote" name="initialQuote" required><%= (initialQuote != null) ? initialQuote : "" %></textarea><br>
-        <input type="submit" value="Submit Initial Quote Request">
-    </form>
+    <h2>Submit initial quote request</h2>
+      <button class="big-button" onclick="location.href='form1.jsp';">Submit Quote Request</button>
 
     <div>
+        <a href="login.jsp" target="_self" class="link">Login</a>
+    </div>
+    <div>
+        <a href="register.jsp" target="_self" class="link">Register</a>
+    </div>
         <a
 href="login.jsp" target="_self" class="link">Login</a>
-</div>
 <div>
 <a href="register.jsp" target="_self" class="link">Register</a>
 </div>

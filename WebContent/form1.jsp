@@ -4,10 +4,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Respond to initial quote</title>
+    <title>Submit your quote request</title>
 </head>
 <body>
-    <h2>Respond to initial quote</h2>
+    <h2>Submit your quote request</h2>
 
     <%
         String initialName = request.getParameter("initialName");
@@ -23,7 +23,7 @@
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connectionSmith = DriverManager.getConnection(jdbcUrlSmith, dbUserSmith, dbPasswordSmith);
 
-            String insertSmithQuery = "INSERT INTO davidsmith (name, email, phone, quote_request) VALUES (?, ?, ?, ?)";
+            String insertSmithQuery = "INSERT INTO davidsmith (name, email, phone, submittedQuote) VALUES (?, ?, ?, ?)";
             try (PreparedStatement preparedStatementSmith = connectionSmith.prepareStatement(insertSmithQuery)) {
                 preparedStatementSmith.setString(1, initialName != null ? initialName : "");
                 preparedStatementSmith.setString(2, initialEmail != null ? initialEmail : "");
@@ -47,7 +47,7 @@
         <label for="initialEmail">Email:</label>
         <input type="email" id="initialEmail" name="initialEmail" required value="<%= (initialEmail != null) ? initialEmail : "" %>"><br>
         <label for="initialPhone">Phone:</label>
-        <input type="tel" id="initialPhone" name="initialPhone" value="<%= (initialPhone != null) ? initialPhone : "" %>"><br>
+        <input type="tel" id="initialPhone" name="initialPhone" required value="<%= (initialPhone != null) ? initialPhone : "" %>"><br>
         <label for="initialQuote">Quote Request:</label>
         <textarea id="initialQuote" name="initialQuote" required><%= (initialQuote != null) ? initialQuote : "" %></textarea><br>
         <input type="submit" value="Submit Initial Quote Request">
@@ -62,3 +62,4 @@
 
 </body>
 </html>
+
