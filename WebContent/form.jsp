@@ -1,101 +1,105 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.*" %>
+<%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Request a Quote</title>
+    <title>Respond to initial quote</title>
 </head>
 <body>
-    <h1>Request a Quote</h1>
-
+<h2> Respond to initial quote</h2>
     <%
-        String loggedInUser = (String) session.getAttribute("username");
-        if (loggedInUser != null && !loggedInUser.isEmpty()) {
-    %>
-        <div>
-            <h3>Hi <%= loggedInUser %>!</h3>
-        </div>
-    <%
-        }
-
-        String submittedQuote = request.getParameter("initialQuote");
-        if (submittedQuote != null && !submittedQuote.isEmpty()) {
-            session.setAttribute("submittedQuote", submittedQuote);
-        }
-
         String name = request.getParameter("name");
-        if (name != null && !name.isEmpty()) {
-            session.setAttribute("name", name);
-        }
-
         String email = request.getParameter("email");
-        if (email != null && !email.isEmpty()) {
-            session.setAttribute("email", email);
-        }
-
         String phone = request.getParameter("phone");
-        if (phone != null && !phone.isEmpty()) {
-            session.setAttribute("phone", phone);
-        }
+        String submittedQuote = request.getParameter("description");
 
-        String responseStatus = request.getParameter("responseStatus");
-        if (responseStatus != null && !responseStatus.isEmpty()) {
-            session.setAttribute("responseStatus", responseStatus);
-        }
-        
-   
-        
-    
+        String initialName = request.getParameter("initialName");
+        String initialEmail = request.getParameter("initialEmail");
+        String initialPhone = request.getParameter("initialPhone");
+        String initialQuote = request.getParameter("initialQuote");
 
+        try {
+            
+            String jdbcUrlQuote = "jdbc:mysql://127.0.0.1:3306/quotes";
+            String dbUserQuote = "john";
+            String dbPasswordQuote = "john1234";
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connectionQuote = DriverManager.getConnection(jdbcUrlQuote, dbUserQuote, dbPasswordQuote);
+
+            String insertQuoteQuery = "INSERT INTO quotes (name, email, phone, quote_request) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement preparedStatementQuote = connectionQuote.prepareStatement(insertQuoteQuery)) {
+                preparedStatementQuote.setString(1, name != null ? name : "");
+                preparedStatementQuote.setString(2, email != null ? email : "");
+                preparedStatementQuote.setString(3, phone != null ? phone : "");
+                preparedStatementQuote.setString(4, submittedQuote != null ? submittedQuote : "");
+
+                preparedStatementQuote.executeUpdate();
+            }
+
+            connectionQuote.close();
+
+         
+            String jdbcUrlSmith = "jdbc:mysql://127.0.0.1:3306/davidsmith";
+            String dbUserSmith = "john";
+            String dbPasswordSmith = "john1234";
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connectionSmith = DriverManager.getConnection(jdbcUrlSmith, dbUserSmith, dbPasswordSmith);
+
+            String insertSmithQuery = "INSERT INTO davidsmith (name, email, phone, quote_request) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement preparedStatementSmith = connectionSmith.prepareStatement(insertSmithQuery)) {
+                preparedStatementSmith.setString(1, initialName != null ? initialName : "");
+                preparedStatementSmith.setString(2, initialEmail != null ? initialEmail : "");
+                preparedStatementSmith.setString(3, initialPhone != null ? initialPhone : "");
+                preparedStatementSmith.setString(4, initialQuote != null ? initialQuote : "");
+
+                preparedStatementSmith.executeUpdate();
+            }
+
+            connectionSmith.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
     %>
-    
+
+    <h2>Response Status for <%= email %>:</h2>
 
     <form action="submitted.jsp" method="post">
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required value="<%= (session.getAttribute("name") != null) ? session.getAttribute("name") : "" %>"><br>
+        <input type="text" id="name" name="name" required value="<%= (name != null) ? name : "" %>"><br>
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required value="<%= (session.getAttribute("email") != null) ? session.getAttribute("email") : "" %>"><br>
+        <input type="email" id="email" name="email" required value="<%= (email != null) ? email : "" %>"><br>
         <label for="phone">Phone:</label>
-        <input type="tel" id="phone" name="phone" value="<%= (session.getAttribute("phone") != null) ? session.getAttribute("phone") : "" %>"><br>
+        <input type="tel" id="phone" name="phone" value="<%= (phone != null) ? phone : "" %>"><br>
         <label for="description">Quote Request:</label>
-        <textarea id="description" name="description" required><%= (session.getAttribute("submittedQuote") != null) ? session.getAttribute("submittedQuote") : "" %></textarea><br>
-        <input type="submit" value="Submit Quote Request">
+        <textarea id="description" name="description" required><%= (submittedQuote != null) ? submittedQuote : "" %></textarea><br>
+        <input type="submit" value="Submit response">
+    </form>
+<h2>Submit initial Quote Request</h2>
+    <form action="submitted.jsp" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required value="<%= (initialName != null) ? initialName : "" %>"><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required value="<%= (initialEmail != null) ? initialEmail : "" %>"><br>
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" value="<%= (initialPhone != null) ? initialPhone : "" %>"><br>
+        <label for="initialQuote">Quote Request:</label>
+        <textarea id="initialQuote" name="initialQuote" required><%= (initialQuote != null) ? initialQuote : "" %></textarea><br>
+        <input type="submit" value="Submit Initial Quote Request">
     </form>
 
     <div>
-        <a href="login.jsp" target="_self" class="link">Login</a>
-    </div>
-    <div>
-        <a href="register.jsp" target="_self" class="link">Register</a>
-    </div>
+        <a
+href="login.jsp" target="_self" class="link">Login</a>
+</div>
+<div>
+<a href="register.jsp" target="_self" class="link">Register</a>
+</div>
 
-    <form action="initialquoteresponse.jsp" method="post">
-        <button type="submit" name="submit" value="respond">Respond to initial quote</button>
-    </form>
-
-    <div>
-        <h2>Response to your Initial Quote Request from David Smith:</h2>
-        <p><%= (session.getAttribute("submittedQuote") != null) ? session.getAttribute("submittedQuote") : "" %></p>
-    </div>
-
-    <div>
-        <h2>David Smith Response:</h2>
-        <p><%= (session.getAttribute("responseStatus") != null) ? "David Smith response to your quote: " + session.getAttribute("responseStatus") : "" %></p>
-        <p>Bill: <%= request.getParameter("billAmount") %></p>
-    </div>
-     <button type="submit" name="submit" value="respond">Pay</button>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
 
 
 

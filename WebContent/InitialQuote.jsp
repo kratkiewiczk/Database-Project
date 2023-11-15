@@ -10,6 +10,8 @@
 
     <%
         String email = request.getParameter("email");
+      
+        session.setAttribute("initialQuoteEmail", email);
     %>
 
     <form action="submitted.jsp" method="post">
@@ -21,6 +23,7 @@
     </form>
 </body>
 </html>
+
 
 
 

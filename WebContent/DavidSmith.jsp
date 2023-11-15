@@ -3,8 +3,21 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <meta charset="ISO-8859-1">
     <title>David Smith Registration</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
 </head>
 <body>
     <center>
@@ -20,30 +33,9 @@
     </div>
     <div></div>
     <hr>
-   
-          
-       
-
-<head>
-
-    <meta charset="UTF-8">
-    <title>Tree Removal Requests</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th, td {
-            text-align: left;
-            padding: 8px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        }
-    </style>
-</head>
-<body>
+    <form action="Clientresponses.jsp" method="post">
+        <button type="submit" name="submit" value="respond">View responses of clients to your initial quote response </button>
+    </form>
     <h1>Tree Removal Requests</h1>
     <table>
         <tr>
@@ -53,6 +45,7 @@
             <th>Email</th>
             <th>Actions </th>
         </tr>
+
         <%
             String[][] tableData = {
                 {"1", "Requesting a quote for a tree", "68640036", "don@gmail.com"},
@@ -68,16 +61,10 @@
                 {"7", "Need a tree removed", "96922139", "jog@gmail.com"},
                 {"8", "Would like some help with this tree", "85329432", "amelia@gmail.com"},
                 {"9", "Tree removal around buildings", "74311516", "sophie@gmail.com"}
-                
-                
             };
-        
-        
-        
-        
-     
-        for (String[] row : tableData) {
-            String initialQuoteResponse = (String) session.getAttribute("initialQuoteResponse_" + row[2]);
+
+            for (String[] row : tableData) {
+                String initialQuoteResponse = (String) session.getAttribute("initialQuoteResponse_" + row[2]);
         %>
             <tr>
                 <td><%= row[0] %></td>
@@ -98,19 +85,22 @@
         <%
         }
         %>
+        
+   
+        <c:if test="${not empty submittedQuote}">
+            <tr>
+                <td>Generated ID</td>
+                <td>${generatedId}</td>
+                <td>${submittedQuote}</td>
+                <td>${email}</td>
+            </tr>
+        </c:if>
+    </table>
 
-
-    
-    
-
-
-<body>
-    <form action="Clientresponses.jsp" method="post">
-        <button type="submit" name="submit" value="respond">View responses of clients to your initial quote response </button>
-    </form>
-    
 
 </body>
+</html>
+
 
 
 

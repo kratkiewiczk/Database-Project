@@ -78,7 +78,14 @@ public class ControlServlet extends HttpServlet {
 	    	}
 	    }
 	    
-	    
+	 // UpdateResponseServlet.java
+	 // Import necessary packages
+
+	
+	  
+
+	  
+
 	    
         	
 	    private void listUser(HttpServletRequest request, HttpServletResponse response)
@@ -154,11 +161,35 @@ public class ControlServlet extends HttpServlet {
 	    		    System.out.println("Login Failed: Please check your credentials.");
 	    		    request.getRequestDispatcher("login.jsp").forward(request, response);
 	    		}
+	    	 
+	
+
+	    	    String generatedId = "123456";
+	    	    String submittedQuote = "This is a sample quote";
+	    	    String email1 = request.getParameter("email");
+
+	    	    request.setAttribute("generatedId", generatedId);
+	    	    request.setAttribute("submittedQuote", submittedQuote);
+	    	    request.setAttribute("email", email);
+
+	
+	    	    request.getRequestDispatcher("DavidSmith.jsp").forward(request, response);
+
+	    	    request.getRequestDispatcher("DavidSmith.jsp").forward(request, response);
+
+	 
+	    	request.getRequestDispatcher("DavidSmith.jsp").forward(request, response);
+
+	    	  
+	   
+
+	 
+
 
 
 	    	 
-	    	 if (userDAO.isValid(email, password)) {
-	    		    currentUser = email;
+	    	 if (userDAO.isValid(email1, password)) {
+	    		    currentUser = email1;
 	    		    System.out.println("Login Successful! Redirecting to activitypage.jsp");
 	    		    session.setAttribute("username", currentUser); 
 	    		    request.getRequestDispatcher("activitypage.jsp").forward(request, response);
@@ -169,16 +200,16 @@ public class ControlServlet extends HttpServlet {
 	    		
 
 	    	 
-	    	 if (email.equals("root") && password.equals("pass1234")) {
+	    	 if (email1.equals("root") && password.equals("pass1234")) {
 				 System.out.println("Login Successful! Redirecting to root");
 				 session = request.getSession();
-				 session.setAttribute("username", email);
+				 session.setAttribute("username", email1);
 				 rootPage(request, response, "");
 	    	 }
-	    	 else if(userDAO.isValid(email, password)) 
+	    	 else if(userDAO.isValid(email1, password)) 
 	    	 {
 			 	 
-			 	 currentUser = email;
+			 	 currentUser = email1;
 				 System.out.println("Login Successful! Redirecting");
 				 request.getRequestDispatcher("activitypage.jsp").forward(request, response);
 			 			 			 			 
@@ -188,6 +219,7 @@ public class ControlServlet extends HttpServlet {
 	    		 request.getRequestDispatcher("login.jsp").forward(request, response);
 	    	 }
 	    }
+	    
 	           
 	    private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	String email = request.getParameter("email");
