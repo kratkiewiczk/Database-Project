@@ -64,6 +64,9 @@ public class ControlServlet extends HttpServlet {
         	case "/root":
         		rootPage(request,response, "");
         		break;
+        	case "/temp":
+        		temp(request,response, "");
+        		break;
         	case "/logout":
         		logout(request,response);
         		break;
@@ -78,14 +81,7 @@ public class ControlServlet extends HttpServlet {
 	    	}
 	    }
 	    
-	 // UpdateResponseServlet.java
-	 // Import necessary packages
-
-	
-	  
-
-	  
-
+	    
 	    
         	
 	    private void listUser(HttpServletRequest request, HttpServletResponse response)
@@ -112,6 +108,22 @@ public class ControlServlet extends HttpServlet {
 	    	request.getRequestDispatcher("rootView.jsp").forward(request, response);
 	    }
 	    
+	    private void temp(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("create temp tables");
+			request.setAttribute("listMessage", userDAO.listUserMessages(Integer.parseInt(request.getParameter("quoteID"))));
+			request.setAttribute("listTree", userDAO.listUserTrees(Integer.parseInt(request.getParameter("quoteID"))));
+			request.setAttribute("listOrd", userDAO.listUserOrds(Integer.parseInt(request.getParameter("quoteID"))));
+			request.setAttribute("listBill", userDAO.listUserBills(Integer.parseInt(request.getParameter("quoteID"))));
+			request.getRequestDispatcher("ClientHomeQuote.jsp").forward(request, response);
+	    }
+	    
+	    private void userPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("user view");
+	    	userDAO.getUserQuotes((String) session.getAttribute("username"));
+			request.setAttribute("listTempQuote", userDAO.listUserQuotes());
+			session.setAttribute("idList", userDAO.idList);
+	    	request.getRequestDispatcher("ClientHome.jsp").forward(request, response);
+	    }
 	    
 	    protected void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	 String email = request.getParameter("email");
@@ -123,41 +135,23 @@ public class ControlServlet extends HttpServlet {
 	    		    session = request.getSession();
 	    		    session.setAttribute("username", email);
 	    		    rootPage(request, response, "");
-	    		} else if (email.equals("david@gmail.com") && password.equals("david1234")) {
-	    		    System.out.println("Login Successful! Redirecting to DavidSmith.jsp");
+	    		} 
+	    	 else if (email.equals("david@gmail.com") && password.equals("david1234")) {
+	    		 	currentUser = email;
+	    		 	System.out.println("Login Successful! Redirecting to DavidSmith.jsp");
+	    		    session = request.getSession();
+	    		    session.setAttribute("username", email);
 	    		    request.getRequestDispatcher("DavidSmith.jsp").forward(request, response);
-	    		} else if (email.equals("amelia@gmail.com") && password.equals("amelia1234")) {
-	    		    System.out.println("Login Successful! Redirecting to form.jsp");
-	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
-	    		} else if (email.equals("angelo@gmail.com") && password.equals("angelo1234")) {
-	    		    System.out.println("Login Successful! Redirecting to form.jsp");
-	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
-	    		} else if (email.equals("don@gmail.com") && password.equals("don123")) {
-	    		    System.out.println("Login Successful! Redirecting to don.jsp");
-	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
-	    		} else if (email.equals("jeannette@gmail.com") && password.equals("jeannette1234")) {
-	    		    System.out.println("Login Successful! Redirecting to jeannette.jsp");
-	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
-	    		} else if (email.equals("jo@gmail.com") && password.equals("jo1234")) {
-	    		    System.out.println("Login Successful! Redirecting to jo.jsp");
-	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
-	    		} else if (email.equals("margarita@gmail.com") && password.equals("margarita1234")) {
-	    		    System.out.println("Login Successful! Redirecting to margarita.jsp");
-	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
-	    		} else if (email.equals("rudy@gmail.com") && password.equals("rudy1234")) {
-	    		    System.out.println("Login Successful! Redirecting to rudy.jsp");
-	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
-	    		} else if (email.equals("sophie@gmail.com") && password.equals("sophie1234")) {
-	    		    System.out.println("Login Successful! Redirecting to sophie.jsp");
-	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
-	    		} else if (email.equals("wallace@gmail.com") && password.equals("wallace1234")) {
-	    		    System.out.println("Login Successful! Redirecting to wallace.jsp");
-	    		    request.getRequestDispatcher("form.jsp").forward(request, response);
-	    		} else if (userDAO.isValid(email, password)) {
+	    		} 
+	    	 else if (userDAO.isValid(email, password)) {
 	    		    currentUser = email;
 	    		    System.out.println("Login Successful! Redirecting to activitypage.jsp");
-	    		    request.getRequestDispatcher("activitypage.jsp").forward(request, response);
-	    		} else {
+	    		    session = request.getSession();
+	    		    session.setAttribute("username", email);
+	    		    userPage(request, response, "");
+
+	    		} 
+	    	 else {
 	    		    System.out.println("Login Failed: Please check your credentials.");
 	    		    request.getRequestDispatcher("login.jsp").forward(request, response);
 	    		}
@@ -219,7 +213,6 @@ public class ControlServlet extends HttpServlet {
 	    		 request.getRequestDispatcher("login.jsp").forward(request, response);
 	    	 }
 	    }
-	    
 	           
 	    private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	String email = request.getParameter("email");
@@ -274,21 +267,4 @@ public class ControlServlet extends HttpServlet {
 	    
 }
 	    
-
-	     
-        
 	    
-	    
-	    
-	    
-	    
-
-	        
-	        
-	    
-	        
-	        
-	        
-	    
-
-

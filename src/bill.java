@@ -3,7 +3,7 @@ public class bill
 		protected int billID;
 		protected double amount;
 	 	protected String stat;
-	 	protected int ordID;
+	 	protected int quoteID;
 	 	protected String email;
 	 
 	    //constructors
@@ -15,16 +15,16 @@ public class bill
 	        this.billID = billID;
 	    }
 	    
-	    public bill(int billID, double amount, String stat, int ordID, String email) 
+	    public bill(int billID, double amount, String stat, int quoteID, String email) 
 	    {
-	    	this(amount, stat, ordID, email);
+	    	this(amount, stat, quoteID, email);
 	    	this.billID = billID;
 	    }
-	    public bill(double amount, String stat, int ordID, String email) 
+	    public bill(double amount, String stat, int quoteID, String email) 
 	    {
 	    	this.amount = amount;
 	    	this.stat = stat;
-	    	this.ordID = ordID;
+	    	this.quoteID = quoteID;
 	    	this.email = email;
 	    }
 	    
@@ -47,11 +47,11 @@ public class bill
 	    public void setStat(String stat) {
 	        this.stat = stat;
 	    }
-	    public int getOrdID() {
-	        return ordID;
+	    public int getQuoteID() {
+	        return quoteID;
 	    }
-	    public void setOrdID(int ordID) {
-	        this.ordID = ordID;
+	    public void setQuoteID(int quoteID) {
+	        this.quoteID = quoteID;
 	    }
 	    public String getEmail() {
 	        return email;

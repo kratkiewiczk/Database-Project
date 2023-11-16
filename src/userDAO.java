@@ -33,6 +33,7 @@ public class userDAO
 	private ResultSet resultSet = null;
 	
 	public userDAO(){}
+	public int[] idList = new int[100];
 	
 	/** 
 	 * @see HttpServlet#HttpServlet()
@@ -129,7 +130,31 @@ public class userDAO
         resultSet.close();
         disconnect();        
         return listMessage;
-    }    
+    } 
+    
+    public List<message> listUserMessages(int id) throws SQLException {
+        List<message> listMessage = new ArrayList<message>();        
+        String sql = "SELECT * FROM Message";      
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+        	if (id == resultSet.getInt("quoteID")) {
+        		int messageID = resultSet.getInt("messageID");
+        		String note = resultSet.getString("note");
+        		int quoteID = resultSet.getInt("quoteID");
+        		String email = resultSet.getString("email");
+        	
+             
+        		message messages = new message(messageID, note, quoteID, email);
+        		listMessage.add(messages);
+        	}
+        }        
+        resultSet.close();
+        disconnect();        
+        return listMessage;
+    }
     
     public List<tree> listAllTrees() throws SQLException {
         List<tree> listTree = new ArrayList<tree>();        
@@ -152,9 +177,54 @@ public class userDAO
         return listTree;
     }  
     
+    public List<tree> listUserTrees(int id) throws SQLException {
+        List<tree> listTree = new ArrayList<tree>();        
+        String sql = "SELECT * FROM Tree";      
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+        	if (id == resultSet.getInt("quoteID")) {
+        		int treeID = resultSet.getInt("treeID");
+        		int height = resultSet.getInt("height");
+        		String nearBuild = resultSet.getString("nearBuild");
+        		int quoteID = resultSet.getInt("quoteID");
+             
+        		tree trees = new tree(treeID, height, nearBuild, quoteID);
+        		listTree.add(trees);
+        	}
+        }        
+        resultSet.close();
+        disconnect();        
+        return listTree;
+    }
+    
     public List<quote> listAllQuotes() throws SQLException {
         List<quote> listQuote = new ArrayList<quote>();        
         String sql = "SELECT * FROM Quote";      
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+            int quoteID = resultSet.getInt("quoteID");
+            double price = resultSet.getDouble("price");
+            String timeWindow = resultSet.getString("timeWindow");
+            String stat = resultSet.getString("stat");
+            String email = resultSet.getString("email");
+             
+            quote quotes = new quote(quoteID, price, timeWindow, stat, email);
+            listQuote.add(quotes);
+        }        
+        resultSet.close();
+        disconnect();        
+        return listQuote;
+    }
+    
+    public List<quote> listUserQuotes() throws SQLException {
+        List<quote> listQuote = new ArrayList<quote>();        
+        String sql = "SELECT * FROM TempQuote";      
         connect_func();      
         statement = (Statement) connect.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
@@ -195,6 +265,29 @@ public class userDAO
         return listOrd;
     }  
     
+    public List<ord> listUserOrds(int id) throws SQLException {
+        List<ord> listOrd = new ArrayList<ord>();        
+        String sql = "SELECT * FROM Ord";      
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+        	if (id == resultSet.getInt("quoteID")) {
+        		int ordID = resultSet.getInt("ordID");
+        		String stat = resultSet.getString("stat");
+        		int quoteID = resultSet.getInt("quoteID");
+        		String email = resultSet.getString("email");
+             
+        		ord ords = new ord(ordID, stat, quoteID, email);
+        		listOrd.add(ords);
+        	}
+        }        
+        resultSet.close();
+        disconnect();        
+        return listOrd;
+    }  
+    
     public List<bill> listAllBills() throws SQLException {
         List<bill> listBill = new ArrayList<bill>();        
         String sql = "SELECT * FROM Bill";      
@@ -206,11 +299,35 @@ public class userDAO
             int billID = resultSet.getInt("billID");
             double amount = resultSet.getDouble("amount");
             String stat = resultSet.getString("stat");
-            int ordID = resultSet.getInt("ordID");
+            int quoteID = resultSet.getInt("quoteID");
             String email = resultSet.getString("email");
              
-            bill bills = new bill(billID, amount, stat, ordID, email);
+            bill bills = new bill(billID, amount, stat, quoteID, email);
             listBill.add(bills);
+        }        
+        resultSet.close();
+        disconnect();        
+        return listBill;
+    }  
+    
+    public List<bill> listUserBills(int id) throws SQLException {
+        List<bill> listBill = new ArrayList<bill>();        
+        String sql = "SELECT * FROM Bill";      
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+        	if (id == resultSet.getInt("quoteID")) {
+        		int billID = resultSet.getInt("billID");
+        		double amount = resultSet.getDouble("amount");
+        		String stat = resultSet.getString("stat");
+        		int quoteID = resultSet.getInt("quoteID");
+        		String email = resultSet.getString("email");
+             
+        		bill bills = new bill(billID, amount, stat, quoteID, email);
+        		listBill.add(bills);
+        	}
         }        
         resultSet.close();
         disconnect();        
@@ -312,6 +429,54 @@ public class userDAO
         statement.close();
          
         return user;
+    }
+    
+    public void getUserQuotes(String email) throws SQLException {
+    	String[] INITIAL = {"drop table if exists TempQuote; ",
+		        ("CREATE TABLE if not exists TempQuote( " +
+		            "quoteID CHAR(15) NOT NULL, " + 
+		            "price DECIMAL(10, 2), " +
+		            "timeWindow VARCHAR(100), " +
+		            "stat VARCHAR(20), " +
+		            "email VARCHAR(50) NOT NULL, " +
+		            "PRIMARY KEY (quoteID), "+
+		            "FOREIGN KEY (email) REFERENCES User(email) "+"); ")};
+    	
+    	for (int i = 0; i < INITIAL.length; i++)
+        	statement.execute(INITIAL[i]);
+    	
+    	connect_func();      
+    	
+    	String sql = "INSERT INTO TempQuote(quoteID, price, timeWindow, stat, email) values(?, ?, ?, ?, ?)";
+    	
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    	
+    	ResultSet resultSet = statement.executeQuery("SELECT * FROM Quote");
+
+    	int count = 0;
+    	
+        while(resultSet.next()) {
+        	int q = resultSet.getInt(1);
+        	String p = resultSet.getString(2);
+        	String t = resultSet.getString(3);
+        	String s = resultSet.getString(4);
+        	String e = resultSet.getString(5);
+        	
+        	if (e.equals(email)) {
+        		idList[count]= q;
+        		count++;
+        		
+        		preparedStatement.setInt(1, q);
+    			preparedStatement.setString(2, p);
+    			preparedStatement.setString(3, t);
+    			preparedStatement.setString(4, s);
+    			preparedStatement.setString(5, e);
+    			
+    			preparedStatement.executeUpdate();
+        	}
+        }
+        preparedStatement.close();
+        disconnect();        
     }
     
     public boolean checkClientID(int clientID) throws SQLException {
@@ -461,10 +626,10 @@ public class userDAO
 					            "billID CHAR(15) NOT NULL, " + 
 					            "amount DECIMAL(10, 2), " +
 					            "stat VARCHAR(20), " +
-					            "ordID CHAR(15) NOT NULL, " +
+					            "quoteID CHAR(15) NOT NULL, " +
 					            "email VARCHAR(50) NOT NULL, " +
 					            "PRIMARY KEY (billID), "+
-					            "FOREIGN KEY (ordID) REFERENCES Ord(ordID), "+
+					            "FOREIGN KEY (quoteID) REFERENCES Quote(quoteID), "+
 					            "FOREIGN KEY (email) REFERENCES User(email) "+"); ")
         					};
         String[] TUPLES1 = {("insert into User(email, firstName, lastName, password, creditCard, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, phoneNumber, role, clientID)"+
@@ -526,9 +691,9 @@ public class userDAO
     			    		"('87174420', 'Done', '88402860', 'jo@gmail.com'),"+
     			    	 	"('59818323', 'Done', '18996146', 'wallace@gmail.com');")};
         				   
-        String[] TUPLES6 = {("insert into Bill(billID, amount, stat, ordID, email)"+
-            		"values ('30274897', '1123.50', 'Paid', '87174420', 'jo@gmail.com'),"+
-    			    	 	"('30384355', '1416.50', 'Unpaid', '59818323', 'wallace@gmail.com');")
+        String[] TUPLES6 = {("insert into Bill(billID, amount, stat, quoteID, email)"+
+            		"values ('30274897', '1123.50', 'Paid', '88402860', 'jo@gmail.com'),"+
+    			    	 	"('30384355', '1416.50', 'Unpaid', '18996146', 'wallace@gmail.com');")
 			    			};
         
         //for loop to put these in database
@@ -570,13 +735,5 @@ public class userDAO
 	
 
 }
-    
-   
-    
-    
-    
-    
-    
-	
-	
+
 

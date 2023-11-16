@@ -122,7 +122,7 @@
                 <th>BillID</th>
                 <th>Amount</th>
                 <th>Status</th>
-                <th>Associated OrderID</th>
+                <th>Associated QuoteID</th>
                 <th>Email</th>
             </tr>
             <c:forEach var="bills" items="${listBill}">
@@ -130,7 +130,7 @@
                     <td><c:out value="${bills.billID}" /></td>
                     <td><c:out value="${bills.amount}" /></td>
                     <td><c:out value="${bills.stat}" /></td>
-                    <td><c:out value="${bills.ordID}" /></td>
+                    <td><c:out value="${bills.quoteID}" /></td>
                     <td><c:out value="${bills.email}" /></td>
             </c:forEach>
         </table>
