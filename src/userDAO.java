@@ -34,6 +34,7 @@ public class userDAO
 	
 	public userDAO(){}
 	public int[] idList = new int[100];
+	public int messageCount;
 	
 	/** 
 	 * @see HttpServlet#HttpServlet()
@@ -206,6 +207,7 @@ public class userDAO
         connect_func();      
         statement = (Statement) connect.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
+        int count = 0;
          
         while (resultSet.next()) {
             int quoteID = resultSet.getInt("quoteID");
@@ -213,6 +215,9 @@ public class userDAO
             String timeWindow = resultSet.getString("timeWindow");
             String stat = resultSet.getString("stat");
             String email = resultSet.getString("email");
+            
+            idList[count]= resultSet.getInt("quoteID");
+    		count++;
              
             quote quotes = new quote(quoteID, price, timeWindow, stat, email);
             listQuote.add(quotes);
@@ -338,6 +343,47 @@ public class userDAO
         if (connect != null && !connect.isClosed()) {
         	connect.close();
         }
+    }
+    
+    public void insertQuote(quote quotes) throws SQLException {
+    	connect_func();
+    	String sql = "insert into Quote(quoteID, price, timeWindow, stat, email) values (?, ?, ?, ?, ?)";
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    		preparedStatement.setInt(1, quotes.getQuoteID());
+    		preparedStatement.setDouble(2, quotes.getPrice());
+    		preparedStatement.setString(3, quotes.getTimeWindow());
+    		preparedStatement.setString(4, quotes.getStat());
+    		preparedStatement.setString(5, quotes.getEmail());
+		
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+    }
+    
+    public void insertMessage(message messages) throws SQLException {
+    	messageCount++;
+    	connect_func();
+    	String sql = "insert into Message(messageID, note, quoteID, email) values (?, ?, ?, ?)";
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    		preparedStatement.setInt(1, messages.getMessageID());
+    		preparedStatement.setString(2, messages.getNote());
+    		preparedStatement.setInt(3, messages.getQuoteID());
+    		preparedStatement.setString(4, messages.getEmail());
+		
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+    }
+    
+    public void insertTree(tree trees) throws SQLException {
+    	connect_func();
+    	String sql = "insert into Tree(treeID, height, nearBuild, quoteID) values (?, ?, ?, ?)";
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    		preparedStatement.setInt(1, trees.getTreeID());
+    		preparedStatement.setInt(2, trees.getHeight());
+    		preparedStatement.setString(3, trees.getNearBuild());
+    		preparedStatement.setInt(4, trees.getQuoteID());
+		
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
     }
     
     public void insert(user users) throws SQLException {
@@ -497,6 +543,24 @@ public class userDAO
     	return checks;
     }
     
+    public boolean checkQuote(int id) throws SQLException {
+    	boolean checks = false;
+    	String sql = "SELECT * FROM Quote WHERE quoteID = ?";
+    	connect_func();
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        
+        System.out.println(checks);	
+        
+        if (resultSet.next()) {
+        	checks = true;
+        }
+        
+        System.out.println(checks);
+    	return checks;
+    }
+    
     public boolean checkEmail(String email) throws SQLException {
     	boolean checks = false;
     	String sql = "SELECT * FROM User WHERE email = ?";
@@ -561,6 +625,7 @@ public class userDAO
     public void init() throws SQLException, FileNotFoundException, IOException{
     	connect_func();
         statement =  (Statement) connect.createStatement();
+        messageCount = 14;
         
         String[] INITIAL1 = {"drop database if exists testdb; ",
 					        "create database testdb; ",
@@ -594,7 +659,7 @@ public class userDAO
 					        
         String[] INITIAL3 = {"drop table if exists Message; ",
 					        ("CREATE TABLE if not exists Message( " +
-					            "messageID CHAR(15) NOT NULL, " + 
+					            "messageID INT(15) NOT NULL, " + 
 					            "note VARCHAR(200), " +
 					            "quoteID CHAR(15) NOT NULL, " + 
 					            "email VARCHAR(50) NOT NULL, " + 

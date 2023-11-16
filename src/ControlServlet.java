@@ -67,6 +67,15 @@ public class ControlServlet extends HttpServlet {
         	case "/temp":
         		temp(request,response, "");
         		break;
+        	case "/submit":
+        		submitMessage(request,response, "");
+        		break;
+        	case "/submitinit":
+        		submitInitialMessage(request,response, "");
+        		break;
+        	case "/treenum":
+        		submitTreeNum(request,response, "");
+        		break;
         	case "/logout":
         		logout(request,response);
         		break;
@@ -96,6 +105,57 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
 	    }
+	    
+	    private void submitInitialMessage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("create new quote and insert message into table");
+	    	String message = request.getParameter("description");
+	    	String email = (String) session.getAttribute("username");
+	    	int messageID = userDAO.messageCount + 1;
+	    	
+	    	int num = (int)(java.lang.Math.random() * 99999999) + 10000000;
+	    	while (userDAO.checkQuote(num))
+				num = (int)(java.lang.Math.random() * 99999999) + 10000000;
+	    	
+	    	quote quotes = new quote(num, 0.00, "", "In Progress", email);
+   	 		userDAO.insertQuote(quotes);
+	    	
+	    	message messages = new message(messageID, message, num, email);
+   	 		userDAO.insertMessage(messages);
+   	 		
+   	 		for(int i = 0; i < (int) session.getAttribute("treeNum"); i++) {
+   	 			int num1 = (int)(java.lang.Math.random() * 99999999) + 10000000;
+   	 			while (userDAO.checkQuote(num1))
+					num1 = (int)(java.lang.Math.random() * 99999999) + 10000000;
+   	 			
+   	 			String attr1 = "height" + i;
+   	 			String attr2 = "near" + i;
+   	 			
+   	 			tree trees = new tree(num1, Integer.parseInt(request.getParameter(attr1)), request.getParameter(attr2), num);
+   	 			userDAO.insertTree(trees);
+   	 		}
+	    	
+			request.getRequestDispatcher("submitted.jsp").forward(request, response);
+	    }
+	    
+	    private void submitMessage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("insert message into table");
+	    	String message = request.getParameter("message");
+	    	int quoteID = (int) session.getAttribute("quoteID");
+	    	String email = (String) session.getAttribute("username");
+	    	int messageID = userDAO.messageCount + 1;
+	    	
+	    	message messages = new message(messageID, message, quoteID, email);
+   	 		userDAO.insertMessage(messages);
+	    	
+			request.getRequestDispatcher("submitted.jsp").forward(request, response);
+	    }
+	    
+	    private void submitTreeNum(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("get tree number");
+	    	session.setAttribute("treeNum", Integer.parseInt(request.getParameter("tree")));
+	    	
+			request.getRequestDispatcher("form.jsp").forward(request, response);
+	    }
 	    	        
 	    private void rootPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("root view");
@@ -110,11 +170,19 @@ public class ControlServlet extends HttpServlet {
 	    
 	    private void temp(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("create temp tables");
+	    	session.setAttribute("quoteID", Integer.parseInt(request.getParameter("quoteID")));
 			request.setAttribute("listMessage", userDAO.listUserMessages(Integer.parseInt(request.getParameter("quoteID"))));
 			request.setAttribute("listTree", userDAO.listUserTrees(Integer.parseInt(request.getParameter("quoteID"))));
 			request.setAttribute("listOrd", userDAO.listUserOrds(Integer.parseInt(request.getParameter("quoteID"))));
 			request.setAttribute("listBill", userDAO.listUserBills(Integer.parseInt(request.getParameter("quoteID"))));
 			request.getRequestDispatcher("ClientHomeQuote.jsp").forward(request, response);
+	    }
+	    
+	    private void davidPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("david view");
+	    	request.setAttribute("listQuote", userDAO.listAllQuotes());
+			session.setAttribute("idList", userDAO.idList);
+	    	request.getRequestDispatcher("DavidHome.jsp").forward(request, response);
 	    }
 	    
 	    private void userPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
@@ -141,7 +209,7 @@ public class ControlServlet extends HttpServlet {
 	    		 	System.out.println("Login Successful! Redirecting to DavidSmith.jsp");
 	    		    session = request.getSession();
 	    		    session.setAttribute("username", email);
-	    		    request.getRequestDispatcher("DavidSmith.jsp").forward(request, response);
+	    		    davidPage(request, response, "");
 	    		} 
 	    	 else if (userDAO.isValid(email, password)) {
 	    		    currentUser = email;

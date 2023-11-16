@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,12 +62,14 @@
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
+        
+        int count = 0;
     %>
     
 <h2>Request a quote</h2>
 
 
-    <form action="submitted.jsp" method="post">
+    <form action="submitinit" method="post">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required value="<%= (name != null) ? name : "" %>"><br>
         <label for="email">Email:</label>
@@ -75,6 +78,19 @@
         <input type="tel" id="phone" name="phone" value="<%= (phone != null) ? phone : "" %>"><br>
         <label for="description">Quote Request:</label>
         <textarea id="description" name="description" required><%= (submittedQuote != null) ? submittedQuote : "" %></textarea><br>
+        
+        <c:forEach var="num" begin="1" end='<%= (int) session.getAttribute("treeNum") %>'>
+        	<h2>Tree #<c:out value="${num}"/></h2>
+        	<label for="treeheight<%=count%>">Tree Height:</label>
+        	<input type="text" id="treeheight<%=count%>" name="height<%=count%>" required/><br>
+        	
+        	<label for="treenear<%=count%>">Is the Tree Near a Building?</label>
+        	<input type="text" id="treenear<%=count%>" name="near<%=count%>" placeholder="yes or no" maxlength="3" required/><br>
+       		
+       		<% count++; %>
+        </c:forEach>
+        
+        <br>
         <input type="submit" value="Submit response">
     </form>
 

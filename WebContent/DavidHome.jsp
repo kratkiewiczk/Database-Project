@@ -6,32 +6,30 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Root page</title>
+<title>Home Page</title>
 </head>
 <body>
 
-<div align = "center">
-	
-	<form action = "initialize">
-		<input type = "submit" value = "Initialize the Database"/>
-	</form>
-	<div>
-	<a href="login.jsp"target ="_self" > logout</a><br><br> 
-	</div>
-	<div>
-	<a href="DavidSmith.jsp"target ="_self" > David Smith</a><br><br> 
-	</div>
+<div align="center">
+<%
+	String user = (String) session.getAttribute("username");
+	int[] idList = (int[]) session.getAttribute("idList");
+	int count = 0;
+%>
 
-<h1>All Quotes</h1>
+<h1>Welcome <%= user %>, to Your Home Page </h1>
+<h2>View All Quotes and Set Up the Info</h2>
+
     <div align="center">
-                <table border="1" cellpadding="6">
-            <caption><h2>Quote</h2></caption>
+        <table border="1" cellpadding="6">
+            <caption><h2>Quotes</h2></caption>
             <tr>
                 <th>QuoteID</th>
                 <th>Price</th>
                 <th>Time Window</th>
                 <th>Status</th>
                 <th>Email</th>
+                <th></th>
             </tr>
             <c:forEach var="quotes" items="${listQuote}">
                 <tr style="text-align:center">
@@ -40,16 +38,24 @@
                     <td><c:out value="${quotes.timeWindow}" /></td>
                     <td><c:out value="${quotes.stat}"/></td>
                     <td><c:out value="${quotes.email}" /></td>
+                    <td>
+                    <form action="temp" method="post">
+                            <input type="hidden" name="quoteID" value="<%= idList[count] %>" />
+                            <input type="submit" value="Visit this Quote" />
+                        </form>
+                    </td>
+                    <% count++; %>
             </c:forEach>
         </table>
-        
-        
-        <form action="DavidSmith.jsp" method="post">
-        <button type="submit" name="submit" value="respond">See Quote Info</button>
-    	</form>
-        
-        
+                
+        <div>
+		<a href="DavidSmith.jsp"target ="_self" >Other Page</a><br><br> 
+		</div>    
+    	
+    	<div>
+		<a href="login.jsp"target ="_self" > logout</a><br><br> 
+		</div>
 	</div>
-	</div>
+</div>
 </body>
 </html>

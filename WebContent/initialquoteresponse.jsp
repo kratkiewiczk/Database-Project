@@ -8,8 +8,8 @@
 <body>
     <h2>Send a message</h2>
 
-    <form action="submitted.jsp" method="post">
-        <textarea name="initialQuoteResponse" rows="4" cols="50"></textarea>
+    <form action="submit" method="post">
+        <textarea name="message" rows="4" cols="50" maxlength="200" placeholder="Enter a message (200 character limit)"></textarea>
         <br>
         <button type="submit" name="submit" value="respond">Submit response</button>
     </form>
