@@ -3,10 +3,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Respond to initial quote response from David Smith</title>
+    <title>Send a message</title>
 </head>
 <body>
-    <h2>Respond to initial quote response</h2>
+    <h2>Send a message</h2>
 
     <form action="submitted.jsp" method="post">
         <textarea name="initialQuoteResponse" rows="4" cols="50"></textarea>

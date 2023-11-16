@@ -48,9 +48,14 @@
             </c:forEach>
         </table>
         
-        <form action="form.jsp" method="post">
-        <button type="submit" name="submit" value="respond">Request a Quote</button>
-    	</form>
+<form action="form.jsp" method="post">
+    <button type="submit" name="submit" value="respond">Request a Quote</button>
+</form>
+
+<form action="form1.jsp" method="post">
+    <button type="submit" name="submit" value="respond">Respond to initial quote</button>
+</form>
+
     	
     	<div>
 		<a href="login.jsp"target ="_self" > logout</a><br><br> 

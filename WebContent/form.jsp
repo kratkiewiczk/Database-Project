@@ -4,10 +4,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Respond to initial quote</title>
+    <title>Request a quote</title>
 </head>
 <body>
-<h2> Respond to initial quote</h2>
     <%
         String name = request.getParameter("name");
         String email = request.getParameter("email");
@@ -63,8 +62,9 @@
             e.printStackTrace();
         }
     %>
+    
+<h2>Request a quote</h2>
 
-    <h2>Response Status for <%= email %>:</h2>
 
     <form action="submitted.jsp" method="post">
         <label for="name">Name:</label>
@@ -77,8 +77,7 @@
         <textarea id="description" name="description" required><%= (submittedQuote != null) ? submittedQuote : "" %></textarea><br>
         <input type="submit" value="Submit response">
     </form>
-    <h2>Submit initial quote request</h2>
-      <button class="big-button" onclick="location.href='form1.jsp';">Submit Quote Request</button>
+
 
     <div>
         <a href="login.jsp" target="_self" class="link">Login</a>
@@ -86,11 +85,8 @@
     <div>
         <a href="register.jsp" target="_self" class="link">Register</a>
     </div>
-        <a
-href="login.jsp" target="_self" class="link">Login</a>
-<div>
-<a href="register.jsp" target="_self" class="link">Register</a>
-</div>
+       
+
 
 </body>
 </html>

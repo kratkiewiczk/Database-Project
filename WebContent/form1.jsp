@@ -4,10 +4,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Submit your quote request</title>
+    <title>Respond to initial quote</title>
 </head>
 <body>
-    <h2>Submit your quote request</h2>
+    <h2>Respond to initial quote</h2>
 
     <%
         String initialName = request.getParameter("initialName");
@@ -38,8 +38,9 @@
             e.printStackTrace();
         }
     %>
+    
 
-    <h2>Response Status for <%= initialEmail %>:</h2>
+
 
     <form action="submitted.jsp" method="post">
         <label for="initialName">Name:</label>
