@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.sql.*, java.util.List, java.util.ArrayList" %>
 <%@ page import="javax.sql.DataSource" %>
 <%@ page import="javax.naming.InitialContext" %>
@@ -40,7 +39,7 @@
         <button type="submit" name="submit" value="respond">View responses of clients to your initial quote response</button>
     </form>
     <h1>Tree Removal Requests</h1>
-    <table>
+    <table border="1">
         <tr>
             <th>MessageID</th>
             <th>Note</th>
@@ -49,80 +48,78 @@
             <th>Actions </th>
         </tr>
 
-
-        <%
-    
-
-
-       
-        %>
-    <%
-        try {
-      
-            String jdbcUrlSmith = "jdbc:mysql://127.0.0.1:3306/davidsmith";
-            String dbUserSmith = "john";
-            String dbPasswordSmith = "john1234";
-
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connectionSmith = DriverManager.getConnection(jdbcUrlSmith, dbUserSmith, dbPasswordSmith);
-
-  
-            String selectSmithQuery = "SELECT * FROM davidsmith";
-            try (Statement statement = connectionSmith.createStatement();
-                 ResultSet resultSet = statement.executeQuery(selectSmithQuery)) {
-
-                out.println("<table border='1'>");
-                out.println("<tr><th>Name</th><th>Email</th><th>Phone</th><th>Quote Request</th></tr>");
-
-                while (resultSet.next()) {
-                    out.println("<tr>");
-                    out.println("<td>" + resultSet.getString("name") + "</td>");
-                    out.println("<td>" + resultSet.getString("email") + "</td>");
-                    out.println("<td>" + resultSet.getString("phone") + "</td>");
-                    out.println("<td>" + resultSet.getString("submittedQuote") + "</td>");
-                    out.println("</tr>");
-                }
-
-                out.println("</table>");
-            }
-
-            connectionSmith.close();
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-    %>
-
-</body>
-</html>
-     
         <%
             try {
-                InitialContext context = new InitialContext();
-                DataSource dataSource = (DataSource) context.lookup("java:comp/env/jdbc/mysql");
+                String jdbcUrlSmith = "jdbc:mysql://127.0.0.1:3306/davidsmith";
+                String dbUserSmith = "john";
+                String dbPasswordSmith = "john1234";
 
-                try (Connection connection = dataSource.getConnection()) {
-                    String selectQuery = "SELECT * FROM davidsmith";
-                    try (Statement statement = connection.createStatement();
-                         ResultSet resultSet = statement.executeQuery(selectQuery)) {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection connectionSmith = DriverManager.getConnection(jdbcUrlSmith, dbUserSmith, dbPasswordSmith);
 
-                        while (resultSet.next()) {
+                String selectSmithQuery = "SELECT * FROM davidsmith";
+                try (Statement statement = connectionSmith.createStatement();
+                     ResultSet resultSet = statement.executeQuery(selectSmithQuery)) {
+
+                    while (resultSet.next()) {
         %>
-                            <tr>
-                              
-                                <td><%= resultSet.getString("name") %></td>
-                                <td><%= resultSet.getString("email") %></td>
-                                <td><%= resultSet.getString("phone") %></td>
-                                <td><%= resultSet.getString("submittedQuote") %></td>
-                            </tr>
+                        <tr>
+                            <td><%= resultSet.getString("name") %></td>
+                            <td><%= resultSet.getString("email") %></td>
+                            <td><%= resultSet.getString("phone") %></td>
+                            <td><%= resultSet.getString("submittedQuote") %></td>
+                        </tr>
         <%
-                        }
                     }
                 }
-            } catch (SQLException | NamingException e) {
+
+                String[][] tableData = {
+                    {"1", "Requesting a quote for a tree", "68640036", "don@gmail.com"},
+                    {"2", "Tree removal in residential area", "90773260", "angelo@gmail.com"},
+                    {"3", "Help with tree removal", "40893246", "rudy@gmail.com"},
+                    {"4", "We are not allowed to do work in your area right now", "90773260", "david@gmail.com"},
+                    {"5", "We cannot work in your area at the moment", "40893246", "david@gmail.com"},
+                    {"6", "I would like a quote for my tree", "22568850", "margarita@gmail.com"},
+                    {"7", "Price should be lower, around 400", "22568850", "margarita@gmail.com"},
+                    {"8", "We can allow that", "22568850", "david@gmail.com"},
+                    {"9", "Requesting a quote for multiple trees to be cut down", "88402860", "jo@gmail.com"},
+                    {"10", "Need some very tall trees removed", "18996146", "wallace@gmail.com"},
+                    {"11", "Need a tree removed", "96922139", "jog@gmail.com"},
+                    {"12", "Would like some help with this tree", "85329432", "amelia@gmail.com"},
+                    {"13", "Tree removal around buildings", "74311516", "sophie@gmail.com"}
+                };
+                
+                
+
+                for (String[] data : tableData) {
+        %>
+        
+                    <tr>
+                    
+                    
+                        <td><%= data[0] %></td>
+                        <td><%= data[1] %></td>
+                        <td><%= data[2] %></td>
+                        <td><%= data[3] %></td>
+                        <td>
+    <form action="initialquoteresponse.jsp" method="post">
+        <input type="hidden" name="email" value="<%= data[3] %>">
+        <button type="submit" name="responseStatus" value="respond">Respond</button>
+    </form>
+</td>
+                        <td>
+
+        <%
+                }
+                connectionSmith.close();
+            } catch (ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
             }
+        
+        
         %>
     </table>
+
 </body>
 </html>
 
