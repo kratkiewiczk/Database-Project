@@ -40,7 +40,11 @@ Download this project and import it into eclipse
 Configure project so it runs on tomcat     
 Right click on one of the jsp files (should start with login.jsp), then go to run, then run on server.    
          
-       
+#       
+      
+#     
+     
+#    
         
 Instructions for project part 2 are:     
 Should be same as part 1, but don't need that mysql code anymore     
