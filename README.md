@@ -81,16 +81,16 @@ CREATE DATABASE IF NOT EXISTS quotes;
 	('Jog', 'jog@gmail.com', '96922139', 'Need a tree removed'),
 	('Amelia', 'amelia@gmail.com', '85329432', 'Would like some help with this tree'),
 	('Sophie', 'sophie@gmail.com', '74311516', 'Tree removal around buildings');
+ 
+DESCRIBE davidsmith;
 
-	DESCRIBE davidsmith;
+COMMIT;
 
-	COMMIT;
+SET SQL_SAFE_UPDATES = 0;
 
-	SET SQL_SAFE_UPDATES = 0;
+DELETE FROM davidsmith;
 
-	DELETE FROM davidsmith;
-
-	SELECT * FROM davidsmith;
+SELECT * FROM davidsmith;
 
 That area of code may not be relying on the same tables as the ones being initialized but some of that page has some useful info
 Ensure the following is done properly:
