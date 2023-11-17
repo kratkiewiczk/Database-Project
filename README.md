@@ -39,9 +39,9 @@ Code to initialize User table in MYSQL:
 Download this project and import it into eclipse     
 Configure project so it runs on tomcat     
 Right click on one of the jsp files (should start with login.jsp), then go to run, then run on server.    
-
-
-
+         
+       
+        
 Instructions for project part 2 are:     
 Should be same as part 1, but don't need that mysql code anymore     
 If the root login isn't working you likely need to open directly to rootView.jsp and press initialize database cuz all the tables might not be recognized at first     
