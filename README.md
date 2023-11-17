@@ -42,58 +42,58 @@ Right click on one of the jsp files (should start with login.jsp), then go to ru
 
 
 
-Instructions for project part 2 are: 
-Should be same as part 1, but don't need that mysql code anymore
-If the root login isn't working you likely need to open directly to rootView.jsp and press initialize database cuz all the tables might not be recognized at first
-Might need to run this sql code in MYSQL Workbench for DavidSmith.jsp to be viewed properly:
-CREATE DATABASE IF NOT EXISTS quotes;
-	USE quotes;
-	CREATE TABLE IF NOT EXISTS quotes (
-	    id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255),
-	    email VARCHAR(255),
-	    phone VARCHAR(20), 
-	    quote_request TEXT
-	);
-	SET SQL_SAFE_UPDATES = 0;
-	DELETE FROM quotes;
-	SELECT * FROM quotes;
-	USE davidsmith;
-	DROP TABLE IF EXISTS davidsmith;
-	CREATE TABLE davidsmith (
-	    quote_id INT AUTO_INCREMENT PRIMARY KEY,
-	    name VARCHAR(255),
-	    email VARCHAR(255),
-	    phone VARCHAR(20),
-	    submittedQuote TEXT
-	);
-	INSERT INTO davidsmith (name, email, phone, submittedQuote) VALUES
-	('Don', 'don@gmail.com', '68640036', 'Requesting a quote for a tree'),
-	('Angelo', 'angelo@gmail.com', '90773260', 'Tree removal in residential area'),
-	('Rudy', 'rudy@gmail.com', '40893246', 'Help with tree removal'),
-	('David', 'david@gmail.com', '90773260', 'We are not allowed to do work in your area right now'),
-	('David', 'david@gmail.com', '40893246', 'We cannot work in your area at the moment'),
-	('Margarita', 'margarita@gmail.com', '22568850', 'I would like a quote for my tree'),
-	('Margarita', 'margarita@gmail.com', '22568850', 'Price should be lower, around 400'),
-	('David', 'david@gmail.com', '22568850', 'We can allow that'),
-	('Jo', 'jo@gmail.com', '88402860', 'Requesting a quote for multiple trees to be cut down'),
-	('Wallace', 'wallace@gmail.com', '18996146', 'Need some very tall trees removed'),
-	('Jog', 'jog@gmail.com', '96922139', 'Need a tree removed'),
-	('Amelia', 'amelia@gmail.com', '85329432', 'Would like some help with this tree'),
-	('Sophie', 'sophie@gmail.com', '74311516', 'Tree removal around buildings');
- 
-DESCRIBE davidsmith;
-
-COMMIT;
-
-SET SQL_SAFE_UPDATES = 0;
-
-DELETE FROM davidsmith;
-
-SELECT * FROM davidsmith;
-
-That area of code may not be relying on the same tables as the ones being initialized but some of that page has some useful info
-Ensure the following is done properly:
-Download this project and import it into eclipse     
-Configure project so it runs on tomcat     
-Right click on one of the jsp files (may need to load rootView.jsp directly for the first time initialization), then go to run, then run on server.   
+Instructions for project part 2 are:     
+Should be same as part 1, but don't need that mysql code anymore     
+If the root login isn't working you likely need to open directly to rootView.jsp and press initialize database cuz all the tables might not be recognized at first     
+Might need to run this sql code in MYSQL Workbench for DavidSmith.jsp to be viewed properly:      
+CREATE DATABASE IF NOT EXISTS quotes;     
+	USE quotes;     
+	CREATE TABLE IF NOT EXISTS quotes (     
+	    id INT AUTO_INCREMENT PRIMARY KEY,    
+            name VARCHAR(255),    
+	    email VARCHAR(255),    
+	    phone VARCHAR(20),     
+	    quote_request TEXT    
+	);    
+	SET SQL_SAFE_UPDATES = 0;    
+	DELETE FROM quotes;   
+	SELECT * FROM quotes;   
+	USE davidsmith;   
+	DROP TABLE IF EXISTS davidsmith;   
+	CREATE TABLE davidsmith (   
+	    quote_id INT AUTO_INCREMENT PRIMARY KEY,    
+	    name VARCHAR(255),   
+	    email VARCHAR(255),    
+	    phone VARCHAR(20),    
+	    submittedQuote TEXT   
+	);   
+	INSERT INTO davidsmith (name, email, phone, submittedQuote) VALUES    
+	('Don', 'don@gmail.com', '68640036', 'Requesting a quote for a tree'),    
+	('Angelo', 'angelo@gmail.com', '90773260', 'Tree removal in residential area'),   
+	('Rudy', 'rudy@gmail.com', '40893246', 'Help with tree removal'),    
+	('David', 'david@gmail.com', '90773260', 'We are not allowed to do work in your area right now'),    
+	('David', 'david@gmail.com', '40893246', 'We cannot work in your area at the moment'),   
+	('Margarita', 'margarita@gmail.com', '22568850', 'I would like a quote for my tree'),    
+	('Margarita', 'margarita@gmail.com', '22568850', 'Price should be lower, around 400'),    
+	('David', 'david@gmail.com', '22568850', 'We can allow that'),   
+	('Jo', 'jo@gmail.com', '88402860', 'Requesting a quote for multiple trees to be cut down'),   
+	('Wallace', 'wallace@gmail.com', '18996146', 'Need some very tall trees removed'),   
+	('Jog', 'jog@gmail.com', '96922139', 'Need a tree removed'),    
+	('Amelia', 'amelia@gmail.com', '85329432', 'Would like some help with this tree'),    
+	('Sophie', 'sophie@gmail.com', '74311516', 'Tree removal around buildings');   
+     
+DESCRIBE davidsmith;    
+    
+COMMIT;   
+    
+SET SQL_SAFE_UPDATES = 0;   
+    
+DELETE FROM davidsmith;     
+     
+SELECT * FROM davidsmith;     
+     
+That area of code may not be relying on the same tables as the ones being initialized but some of that page has some useful info     
+Ensure the following is done properly:    
+Download this project and import it into eclipse          
+Configure project so it runs on tomcat          
+Right click on one of the jsp files (may need to load rootView.jsp directly for the first time initialization), then go to run, then run on server.        
