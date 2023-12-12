@@ -47,6 +47,10 @@
                     <% count++; %>
             </c:forEach>
         </table>
+               
+        <div>
+		<a href="Statistics.jsp"target ="_self" >View Statistics</a><br><br> 
+		</div> 
                 
         <div>
 		<a href="DavidSmith.jsp"target ="_self" >Other Page</a><br><br> 
