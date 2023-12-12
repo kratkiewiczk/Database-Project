@@ -67,6 +67,9 @@ public class ControlServlet extends HttpServlet {
         	case "/temp":
         		temp(request,response, "");
         		break;
+        	case "/tempDavid":
+        		tempDavid(request,response, "");
+        		break;
         	case "/submit":
         		submitMessage(request,response, "");
         		break;
@@ -176,6 +179,16 @@ public class ControlServlet extends HttpServlet {
 			request.setAttribute("listOrd", userDAO.listUserOrds(Integer.parseInt(request.getParameter("quoteID"))));
 			request.setAttribute("listBill", userDAO.listUserBills(Integer.parseInt(request.getParameter("quoteID"))));
 			request.getRequestDispatcher("ClientHomeQuote.jsp").forward(request, response);
+	    }
+	    
+	    private void tempDavid(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("create temp tables");
+	    	session.setAttribute("quoteID", Integer.parseInt(request.getParameter("quoteID")));
+			request.setAttribute("listMessage", userDAO.listUserMessages(Integer.parseInt(request.getParameter("quoteID"))));
+			request.setAttribute("listTree", userDAO.listUserTrees(Integer.parseInt(request.getParameter("quoteID"))));
+			request.setAttribute("listOrd", userDAO.listUserOrds(Integer.parseInt(request.getParameter("quoteID"))));
+			request.setAttribute("listBill", userDAO.listUserBills(Integer.parseInt(request.getParameter("quoteID"))));
+			request.getRequestDispatcher("DavidHomeQuote.jsp").forward(request, response);
 	    }
 	    
 	    private void davidPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{

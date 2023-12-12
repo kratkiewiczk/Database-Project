@@ -134,7 +134,102 @@
                     <td><c:out value="${bills.email}" /></td>
             </c:forEach>
         </table>
-	</div>
-	</div>
-</body>
-</html>
+           <table border="1" cellpadding="6">
+            <caption><h2>Big Clients</h2></caption>
+            <tr>
+                <th>BillID</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Associated QuoteID</th>
+                <th>Email</th>
+            </tr>
+
+        </table>
+           <table border="1" cellpadding="6">
+            <caption><h2>Easy Clients</h2></caption>
+            <tr>
+                <th>BillID</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Associated QuoteID</th>
+                <th>Email</th>
+            </tr>
+
+        </table>
+           <table border="1" cellpadding="6">
+            <caption><h2>One Tree Quotes</h2></caption>
+            <tr>
+                <th>BillID</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Associated QuoteID</th>
+                <th>Email</th>
+            </tr>
+
+        </table>
+           <table border="1" cellpadding="6">
+            <caption><h2>Prospective Clients</h2></caption>
+            <tr>
+                <th>BillID</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Associated QuoteID</th>
+                <th>Email</th>
+            </tr>
+
+        </table>
+           <table border="1" cellpadding="6">
+            <caption><h2>Highest Tree</h2></caption>
+            <tr>
+                <th>BillID</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Associated QuoteID</th>
+                <th>Email</th>
+            </tr>
+
+        </table>
+           <table border="1" cellpadding="6">
+            <caption><h2>Overdue Bills</h2></caption>
+            <tr>
+                <th>BillID</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Associated QuoteID</th>
+                <th>Email</th>
+            </tr>
+
+        </table>
+           <table border="1" cellpadding="6">
+            <caption><h2>Bad Clients</h2></caption>
+            <tr>
+                <th>BillID</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Associated QuoteID</th>
+                <th>Email</th>
+            </tr>
+        </table>
+           <table border="1" cellpadding="6">
+            <caption><h2>Good Clients</h2></caption>
+            <tr>
+                <th>BillID</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Associated QuoteID</th>
+                <th>Email</th>
+            </tr>
+
+        </table>
+           <table border="1" cellpadding="6">
+            <caption><h2>Statistics</h2></caption>
+            <tr>
+                <th>BillID</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Associated QuoteID</th>
+                <th>Email</th>
+
+        </table>
+
+    </html>

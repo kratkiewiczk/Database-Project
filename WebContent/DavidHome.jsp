@@ -30,6 +30,7 @@
                 <th>Status</th>
                 <th>Email</th>
                 <th></th>
+                <th></th>
             </tr>
             <c:forEach var="quotes" items="${listQuote}">
                 <tr style="text-align:center">
@@ -39,9 +40,15 @@
                     <td><c:out value="${quotes.stat}"/></td>
                     <td><c:out value="${quotes.email}" /></td>
                     <td>
-                    <form action="temp" method="post">
+                    <form action="tempDavid" method="post">
                             <input type="hidden" name="quoteID" value="<%= idList[count] %>" />
                             <input type="submit" value="Visit this Quote" />
+                        </form>
+                    </td>
+                    <td>
+                    <form action="edit" method="post">
+                            <input type="hidden" name="quoteID" value="<%= idList[count] %>" />
+                            <input type="submit" value="Edit this Quote" />
                         </form>
                     </td>
                     <% count++; %>
