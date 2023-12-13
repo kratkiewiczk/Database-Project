@@ -34,7 +34,6 @@ public class userDAO
 	
 	public userDAO(){}
 	public int[] idList = new int[100];
-	public int messageCount;
 	
 	/** 
 	 * @see HttpServlet#HttpServlet()
@@ -345,6 +344,101 @@ public class userDAO
         }
     }
     
+    public void editQuote(int quoteID, float price, String timeWindow) throws SQLException {
+    	connect_func();
+    	String sql = "update Quote set price = ?, timeWindow = ? where quoteID = ?";
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    		preparedStatement.setDouble(1, price);
+    		preparedStatement.setString(2, timeWindow);
+    		preparedStatement.setInt(3, quoteID);
+		
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+        disconnect(); 
+    }
+    
+    public void rejectQuote(int quoteID) throws SQLException {
+    	connect_func();
+    	String sql = "update Quote set stat = ? where quoteID = ?";
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    		preparedStatement.setString(1, "Rejected");
+    		preparedStatement.setInt(2, quoteID);
+		
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+        disconnect(); 
+    }
+    
+    public void acceptQuote(int quoteID, ord order, bill Bill) throws SQLException {
+    	connect_func();
+    	String sql = "update Quote set stat = ? where quoteID = ?";
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    		preparedStatement.setString(1, "Accepted");
+    		preparedStatement.setInt(2, quoteID);
+		
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+        
+        String sql1 = "insert into Ord(ordID, stat, quoteID, email) values (?, ?, ?, ?)";
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql1);
+			preparedStatement.setInt(1, order.getOrdID());
+			preparedStatement.setString(2, order.getStat());
+			preparedStatement.setInt(3, order.getQuoteID());
+			preparedStatement.setString(4, order.getEmail());
+        
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+        
+        
+        String sql2 = "select price from Quote where quoteID = "+quoteID;
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql2);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        
+        double price1 = 0.0;
+        
+        while(resultSet.next())
+        	price1 = resultSet.getDouble("price");
+        
+        preparedStatement.close();
+        
+        String sql3 = "insert into Bill(billID, amount, stat, quoteID, email) values (?, ?, ?, ?, ?)";
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql3);
+			preparedStatement.setInt(1, Bill.getBillID());
+			preparedStatement.setDouble(2, price1);
+			preparedStatement.setString(3, Bill.getStat());
+			preparedStatement.setInt(4, Bill.getQuoteID());
+			preparedStatement.setString(5, Bill.getEmail());
+        
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+		
+        disconnect(); 
+    }
+    
+    public void updateOrd(int quoteID) throws SQLException {
+    	connect_func();
+    	String sql = "update Ord set stat = ? where quoteID = ?";
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    		preparedStatement.setString(1, "Done");
+    		preparedStatement.setInt(2, quoteID);
+		
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+        disconnect(); 
+    }
+    
+    public void pay(int quoteID) throws SQLException {
+    	connect_func();
+    	String sql = "update Bill set stat = ? where quoteID = ?";
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    		preparedStatement.setString(1, "Paid");
+    		preparedStatement.setInt(2, quoteID);
+		
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+        disconnect(); 
+    }
+    
     public void insertQuote(quote quotes) throws SQLException {
     	connect_func();
     	String sql = "insert into Quote(quoteID, price, timeWindow, stat, email) values (?, ?, ?, ?, ?)";
@@ -360,11 +454,24 @@ public class userDAO
     }
     
     public void insertMessage(message messages) throws SQLException {
-    	messageCount++;
     	connect_func();
+    	
+    	String sql1 = "select max(messageID) as maxID from message";
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql1);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        
+        int num = 0;
+        
+        while(resultSet.next())
+        	num = resultSet.getInt("maxID");
+        
+        preparedStatement.close();
+    	
+        num++;
+    	
     	String sql = "insert into Message(messageID, note, quoteID, email) values (?, ?, ?, ?)";
     	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-    		preparedStatement.setInt(1, messages.getMessageID());
+    		preparedStatement.setInt(1, num);
     		preparedStatement.setString(2, messages.getNote());
     		preparedStatement.setInt(3, messages.getQuoteID());
     		preparedStatement.setString(4, messages.getEmail());
@@ -561,6 +668,42 @@ public class userDAO
     	return checks;
     }
     
+    public boolean checkOrd(int id) throws SQLException {
+    	boolean checks = false;
+    	String sql = "SELECT * FROM Ord WHERE ordID = ?";
+    	connect_func();
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        
+        System.out.println(checks);	
+        
+        if (resultSet.next()) {
+        	checks = true;
+        }
+        
+        System.out.println(checks);
+    	return checks;
+    }
+    
+    public boolean checkBill(int id) throws SQLException {
+    	boolean checks = false;
+    	String sql = "SELECT * FROM Bill WHERE billID = ?";
+    	connect_func();
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        
+        System.out.println(checks);	
+        
+        if (resultSet.next()) {
+        	checks = true;
+        }
+        
+        System.out.println(checks);
+    	return checks;
+    }
+    
     public boolean checkEmail(String email) throws SQLException {
     	boolean checks = false;
     	String sql = "SELECT * FROM User WHERE email = ?";
@@ -625,7 +768,6 @@ public class userDAO
     public void init() throws SQLException, FileNotFoundException, IOException{
     	connect_func();
         statement =  (Statement) connect.createStatement();
-        messageCount = 14;
         
         String[] INITIAL1 = {"drop database if exists testdb; ",
 					        "create database testdb; ",
@@ -758,6 +900,7 @@ public class userDAO
         				   
         String[] TUPLES6 = {("insert into Bill(billID, amount, stat, quoteID, email)"+
             		"values ('30274897', '1123.50', 'Paid', '88402860', 'jo@gmail.com'),"+
+            				"('42174398', '400.00', 'Unpaid', '22568850', 'margarita@gmail.com'),"+
     			    	 	"('30384355', '1416.50', 'Unpaid', '18996146', 'wallace@gmail.com');")
 			    			};
         

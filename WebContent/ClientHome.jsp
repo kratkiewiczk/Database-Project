@@ -29,6 +29,7 @@
                 <th>Time Window</th>
                 <th>Status</th>
                 <th></th>
+                <th></th>
             </tr>
             <c:forEach var="quotes" items="${listTempQuote}">
                 <tr style="text-align:center">
@@ -39,7 +40,17 @@
                     <td>
                     <form action="temp" method="post">
                             <input type="hidden" name="quoteID" value="<%= idList[count] %>" />
-                            <input type="submit" value="Visit this Quote" />
+                            <input type="submit" value="Visit Quote" />
+                        </form>
+                    </td>
+                    <td>
+                    <form action="accept" method="post">
+                            <input type="hidden" name="quoteID" value="<%= idList[count] %>" />
+                            <input type="submit" value="Accept Quote" />
+                        </form>
+                    <form action="reject" method="post">
+                            <input type="hidden" name="quoteID" value="<%= idList[count] %>" />
+                            <input type="submit" value="Reject Quote" />
                         </form>
                     </td>
                     <% count++; %>

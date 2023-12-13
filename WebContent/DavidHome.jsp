@@ -31,6 +31,7 @@
                 <th>Email</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
             <c:forEach var="quotes" items="${listQuote}">
                 <tr style="text-align:center">
@@ -42,13 +43,19 @@
                     <td>
                     <form action="tempDavid" method="post">
                             <input type="hidden" name="quoteID" value="<%= idList[count] %>" />
-                            <input type="submit" value="Visit this Quote" />
+                            <input type="submit" value="Visit Quote" />
                         </form>
                     </td>
                     <td>
-                    <form action="edit" method="post">
+                    <form action="editPage" method="post">
                             <input type="hidden" name="quoteID" value="<%= idList[count] %>" />
-                            <input type="submit" value="Edit this Quote" />
+                            <input type="submit" value="Edit Quote" />
+                        </form>
+                    </td>
+                    <td>
+                    <form action="reject" method="post">
+                            <input type="hidden" name="quoteID" value="<%= idList[count] %>" />
+                            <input type="submit" value="Reject Quote" />
                         </form>
                     </td>
                     <% count++; %>

@@ -72,12 +72,18 @@
                 <th>BillID</th>
                 <th>Amount</th>
                 <th>Status</th>
+                <th></th>
             </tr>
             <c:forEach var="bills" items="${listBill}">
                 <tr style="text-align:center">
                     <td><c:out value="${bills.billID}" /></td>
                     <td><c:out value="${bills.amount}" /></td>
                     <td><c:out value="${bills.stat}" /></td>
+                    <td>
+                    <form action="pay" method="post">
+        				<button type="submit" name="submit" value="respond">Pay Bill</button>
+    				</form>
+                    </td>
                 </tr>
             </c:forEach>
         </table>

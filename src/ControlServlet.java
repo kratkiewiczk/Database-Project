@@ -70,6 +70,23 @@ public class ControlServlet extends HttpServlet {
         	case "/tempDavid":
         		tempDavid(request,response, "");
         		break;
+        	case "/editPage":
+        		editPage(request,response, "");
+        		break;
+        	case "/edit":
+        		submitEdit(request,response, "");
+        		break;
+        	case "/reject":
+        		reject(request,response, "");
+        		break;
+        	case "/accept":
+        		accept(request,response, "");
+        		break;
+        	case "/updateOrd":
+        		updateOrd(request,response, "");
+        	case "/pay":
+        		pay(request,response, "");
+        		break;
         	case "/submit":
         		submitMessage(request,response, "");
         		break;
@@ -113,7 +130,6 @@ public class ControlServlet extends HttpServlet {
 	    	System.out.println("create new quote and insert message into table");
 	    	String message = request.getParameter("description");
 	    	String email = (String) session.getAttribute("username");
-	    	int messageID = userDAO.messageCount + 1;
 	    	
 	    	int num = (int)(java.lang.Math.random() * 99999999) + 10000000;
 	    	while (userDAO.checkQuote(num))
@@ -122,7 +138,7 @@ public class ControlServlet extends HttpServlet {
 	    	quote quotes = new quote(num, 0.00, "", "In Progress", email);
    	 		userDAO.insertQuote(quotes);
 	    	
-	    	message messages = new message(messageID, message, num, email);
+	    	message messages = new message(0, message, num, email);
    	 		userDAO.insertMessage(messages);
    	 		
    	 		for(int i = 0; i < (int) session.getAttribute("treeNum"); i++) {
@@ -145,9 +161,8 @@ public class ControlServlet extends HttpServlet {
 	    	String message = request.getParameter("message");
 	    	int quoteID = (int) session.getAttribute("quoteID");
 	    	String email = (String) session.getAttribute("username");
-	    	int messageID = userDAO.messageCount + 1;
 	    	
-	    	message messages = new message(messageID, message, quoteID, email);
+	    	message messages = new message(0, message, quoteID, email);
    	 		userDAO.insertMessage(messages);
 	    	
 			request.getRequestDispatcher("submitted.jsp").forward(request, response);
@@ -189,6 +204,71 @@ public class ControlServlet extends HttpServlet {
 			request.setAttribute("listOrd", userDAO.listUserOrds(Integer.parseInt(request.getParameter("quoteID"))));
 			request.setAttribute("listBill", userDAO.listUserBills(Integer.parseInt(request.getParameter("quoteID"))));
 			request.getRequestDispatcher("DavidHomeQuote.jsp").forward(request, response);
+	    }
+	    
+	    private void editPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("jump to edit page");
+	    	session.setAttribute("quoteID", Integer.parseInt(request.getParameter("quoteID")));
+			request.getRequestDispatcher("edit.jsp").forward(request, response);
+	    }
+	    
+	    private void submitEdit(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("confirm quote edits");
+	    	int quoteID = (int) session.getAttribute("quoteID");
+	    	float price = Float.parseFloat(request.getParameter("price"));
+	    	String timeWindow = request.getParameter("timeWindow");
+	    	
+	    	userDAO.editQuote(quoteID, price, timeWindow);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+	    }
+	    
+	    private void reject(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("reject quote");
+	    	int quoteID = Integer.parseInt(request.getParameter("quoteID"));
+	    	
+	    	userDAO.rejectQuote(quoteID);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+	    }
+	    
+	    private void accept(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("accept quote");
+	    	int quoteID = Integer.parseInt(request.getParameter("quoteID"));
+	    	String status = "In Progress";
+	    	String email = (String) session.getAttribute("username");	
+	    	int num = (int)(java.lang.Math.random() * 99999999) + 10000000;
+	    	
+	    	while (userDAO.checkOrd(num))
+				num = (int)(java.lang.Math.random() * 99999999) + 10000000;
+	    	
+	    	ord order = new ord(num, status, quoteID, email);
+	    	
+	    	String status1 = "Unpaid";
+	    	int num1 = (int)(java.lang.Math.random() * 99999999) + 10000000;
+	    	
+	    	while (userDAO.checkBill(num1))
+				num1 = (int)(java.lang.Math.random() * 99999999) + 10000000;
+	    	
+	    	bill Bill = new bill(num1, 0.0, status1, quoteID, email);
+	    	
+	    	
+	    	userDAO.acceptQuote(quoteID, order, Bill);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+	    }
+	    
+	    private void updateOrd(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("update order");
+	    	int quoteID = (int) session.getAttribute("quoteID");
+	    	
+	    	userDAO.updateOrd(quoteID);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+	    }
+	    
+	    private void pay(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("update order");
+	    	int quoteID = (int) session.getAttribute("quoteID");
+	    	
+	    	userDAO.pay(quoteID);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
 	    }
 	    
 	    private void davidPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{

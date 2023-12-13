@@ -57,11 +57,17 @@
             <tr>
                 <th>OrderID</th>
                 <th>Status</th>
+                <th></th>
             </tr>
             <c:forEach var="ords" items="${listOrd}">
                 <tr style="text-align:center">
                     <td><c:out value="${ords.ordID}" /></td>
                     <td><c:out value="${ords.stat}" /></td>
+                    <td>
+                    <form action="updateOrd" method="post">
+        				<button type="submit" name="submit" value="respond">Update Progress</button>
+    				</form>
+                    </td>
                 </tr>
             </c:forEach>
         </table>
