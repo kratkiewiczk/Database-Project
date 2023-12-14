@@ -101,3 +101,20 @@ Ensure the following is done properly:
 Download this project and import it into eclipse          
 Configure project so it runs on tomcat          
 Right click on one of the jsp files (may need to load rootView.jsp directly for the first time initialization), then go to run, then run on server.        
+         
+#       
+      
+#     
+     
+#    
+    
+Part 3 Final Instructions: 
+Download Eclipse 2023 for Web Developers for optimal results.   
+Download the latest version of Java  
+Install the server TomCat v9 and setup tomcat within eclipse   
+Download MYSQL server    
+Download MYSQL workbench and set up an admin user within workbench named "john" with password "john1234"     
+Download the project and import it into Eclipse    
+Ensure it is set up properly     
+Start with the rootView.jsp and right-click and do run on server, then press initialize database (this should automatically communicate with the database to set everything up)
+Once that is done you can start on the login page and try out all the functionality
