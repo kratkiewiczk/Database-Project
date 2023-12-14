@@ -87,6 +87,9 @@ public class ControlServlet extends HttpServlet {
         	case "/pay":
         		pay(request,response, "");
         		break;
+        	case "/stats":
+        		stats(request,response, "");
+        		break;
         	case "/submit":
         		submitMessage(request,response, "");
         		break;
@@ -149,7 +152,7 @@ public class ControlServlet extends HttpServlet {
    	 			String attr1 = "height" + i;
    	 			String attr2 = "near" + i;
    	 			
-   	 			tree trees = new tree(num1, Integer.parseInt(request.getParameter(attr1)), request.getParameter(attr2), num);
+   	 			tree trees = new tree(num1, Integer.parseInt(request.getParameter(attr1)), request.getParameter(attr2), num, email);
    	 			userDAO.insertTree(trees);
    	 		}
 	    	
@@ -183,6 +186,18 @@ public class ControlServlet extends HttpServlet {
 			request.setAttribute("listQuote", userDAO.listAllQuotes());
 			request.setAttribute("listOrd", userDAO.listAllOrds());
 			request.setAttribute("listBill", userDAO.listAllBills());
+			request.setAttribute("big", userDAO.bigClients());
+			request.setAttribute("easy", userDAO.easyClients());
+			request.setAttribute("oneTree", userDAO.oneTree());
+			request.setAttribute("prospective", userDAO.prospectiveClients());
+			request.setAttribute("highest", userDAO.highestTree());
+			request.setAttribute("overdue", userDAO.overdueBills());
+			request.setAttribute("bad", userDAO.badClients());
+			request.setAttribute("good", userDAO.goodClients());
+			request.setAttribute("statistics", userDAO.clientStats());
+			session.setAttribute("total", userDAO.clientTotal());
+			session.setAttribute("paid", userDAO.clientPaid());
+			request.setAttribute("users", userDAO.clients());
 	    	request.getRequestDispatcher("rootView.jsp").forward(request, response);
 	    }
 	    
@@ -269,6 +284,23 @@ public class ControlServlet extends HttpServlet {
 	    	
 	    	userDAO.pay(quoteID);
 			request.getRequestDispatcher("login.jsp").forward(request, response);
+	    }
+	    
+	    private void stats(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("create temp tables");
+	    	request.setAttribute("big", userDAO.bigClients());
+			request.setAttribute("easy", userDAO.easyClients());
+			request.setAttribute("oneTree", userDAO.oneTree());
+			request.setAttribute("prospective", userDAO.prospectiveClients());
+			request.setAttribute("highest", userDAO.highestTree());
+			request.setAttribute("overdue", userDAO.overdueBills());
+			request.setAttribute("bad", userDAO.badClients());
+			request.setAttribute("good", userDAO.goodClients());
+			request.setAttribute("statistics", userDAO.clientStats());
+			session.setAttribute("total", userDAO.clientTotal());
+			session.setAttribute("paid", userDAO.clientPaid());
+			request.setAttribute("users", userDAO.clients());
+			request.getRequestDispatcher("Statistics.jsp").forward(request, response);
 	    }
 	    
 	    private void davidPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{

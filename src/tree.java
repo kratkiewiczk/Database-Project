@@ -4,6 +4,7 @@ public class tree
 		protected int height;
 	 	protected String nearBuild;
 	 	protected int quoteID;
+	 	protected String email;
 	 
 	    //constructors
 	    public tree() {
@@ -14,16 +15,17 @@ public class tree
 	        this.treeID = treeID;
 	    }
 	    
-	    public tree(int treeID, int height, String nearBuild, int quoteID) 
+	    public tree(int treeID, int height, String nearBuild, int quoteID, String email) 
 	    {
-	    	this(height, nearBuild, quoteID);
+	    	this(height, nearBuild, quoteID, email);
 	    	this.treeID = treeID;
 	    }
-	    public tree(int height, String nearBuild, int quoteID) 
+	    public tree(int height, String nearBuild, int quoteID, String email) 
 	    {
 	    	this.height = height;
 	    	this.nearBuild = nearBuild;
 	    	this.quoteID = quoteID;
+	    	this.email = email;
 	    }
 	    
 	   //getter and setter methods
@@ -50,5 +52,11 @@ public class tree
 	    }
 	    public void setQuoteID(int quoteID) {
 	        this.quoteID = quoteID;
+	    }
+	    public String getEmail() {
+	        return email;
+	    }
+	    public void setEmail(String email) {
+	        this.email = email;
 	    }
 	}

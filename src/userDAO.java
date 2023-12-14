@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.sql.PreparedStatement;
 //import java.sql.Connection;
 //import java.sql.PreparedStatement;
@@ -20,6 +22,7 @@ import java.sql.ResultSet;
 //import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 /**
  * Servlet implementation class Connect
  */
@@ -168,8 +171,9 @@ public class userDAO
             int height = resultSet.getInt("height");
             String nearBuild = resultSet.getString("nearBuild");
             int quoteID = resultSet.getInt("quoteID");
+            String email = resultSet.getString("email");
              
-            tree trees = new tree(treeID, height, nearBuild, quoteID);
+            tree trees = new tree(treeID, height, nearBuild, quoteID, email);
             listTree.add(trees);
         }        
         resultSet.close();
@@ -190,8 +194,9 @@ public class userDAO
         		int height = resultSet.getInt("height");
         		String nearBuild = resultSet.getString("nearBuild");
         		int quoteID = resultSet.getInt("quoteID");
+        		String email = resultSet.getString("email");
              
-        		tree trees = new tree(treeID, height, nearBuild, quoteID);
+        		tree trees = new tree(treeID, height, nearBuild, quoteID, email);
         		listTree.add(trees);
         	}
         }        
@@ -439,6 +444,753 @@ public class userDAO
         disconnect(); 
     }
     
+    public List<user> bigClients() throws SQLException {
+    		List<user> listUser = new ArrayList<user>();
+    		int top = 0;
+    		int count = 0;
+    		String[] arr = new String[100];
+    		connect_func();
+    		String sql = "SELECT email FROM User";     
+    		statement = (Statement) connect.createStatement();
+    		ResultSet resultSet = statement.executeQuery(sql);
+    		
+    		String emailCheck = "";
+    		
+    		while (resultSet.next()) {
+    		
+    		emailCheck = resultSet.getString("email");
+    			
+            String sql1 = "SELECT COUNT(*) AS total FROM Tree WHERE email = ?";            
+            PreparedStatement pstmt1 = connect.prepareStatement(sql1);
+            pstmt1.setString(1, emailCheck);
+            ResultSet resultSet1 = pstmt1.executeQuery();
+            
+            while(resultSet1.next()) {
+            	if ( resultSet1.getInt("total") > top) 
+            		top =  resultSet1.getInt("total");
+            }
+            resultSet1.close();
+            
+    		}
+    		resultSet.close();
+    		
+    		
+    		String sql3 = "SELECT email FROM User";     
+    		statement = (Statement) connect.createStatement();
+    		ResultSet resultSet3 = statement.executeQuery(sql3);
+    		
+    		while (resultSet3.next()) {
+    		
+    		emailCheck = resultSet3.getString("email");
+    			
+            String sql4 = "SELECT COUNT(*) AS total FROM Tree WHERE email = ?";            
+            PreparedStatement pstmt4 = connect.prepareStatement(sql4);
+            pstmt4.setString(1, emailCheck);
+            ResultSet resultSet4 = pstmt4.executeQuery();
+            
+            while(resultSet4.next()) {
+            	if ( resultSet4.getInt("total") == top) {
+            		arr[count] = emailCheck;
+            		count++;
+            	}
+            }
+            resultSet4.close();
+            
+    		}
+    		resultSet3.close();
+    		
+    		for (int i=0; i < count; i++) {
+    		
+    		String sql2 = "SELECT * FROM User WHERE email = ?";
+    		PreparedStatement pstmt2 = connect.prepareStatement(sql2);
+    		pstmt2.setString(1, arr[i]);
+   			ResultSet resultSet2 = pstmt2.executeQuery();
+             
+            while (resultSet2.next()) {
+                String email = resultSet2.getString("email");
+                String firstName = resultSet2.getString("firstName");
+                String lastName = resultSet2.getString("lastName");
+                String password = resultSet2.getString("password");
+                String creditCard = resultSet2.getString("creditCard");
+                String adress_street_num = resultSet2.getString("adress_street_num"); 
+                String adress_street = resultSet2.getString("adress_street"); 
+                String adress_city = resultSet2.getString("adress_city"); 
+                String adress_state = resultSet2.getString("adress_state"); 
+                String adress_zip_code = resultSet2.getString("adress_zip_code"); 
+                String phoneNumber = resultSet2.getString("phoneNumber");
+                String role = resultSet2.getString("role");
+                int clientID = resultSet2.getInt("clientID");
+
+                 
+                user users = new user(email,firstName, lastName, password, creditCard, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, phoneNumber,role,clientID);
+                listUser.add(users);
+            }        
+            resultSet2.close();
+    		}
+            disconnect();        
+            return listUser;
+        }
+    
+    public List<quote> easyClients() throws SQLException {
+		List<quote> listQuote = new ArrayList<quote>();
+		int count = 0;
+		int[] arr = new int[100];
+		connect_func();
+		String sql = "SELECT email FROM User";     
+		statement = (Statement) connect.createStatement();
+		ResultSet resultSet = statement.executeQuery(sql);
+		
+		String emailCheck = "";
+		int quoteIDCheck = 0;
+		String acceptCheck = "";
+		
+		while (resultSet.next()) {
+		
+		emailCheck = resultSet.getString("email");
+		
+		String sql5 = "SELECT * FROM Quote WHERE email = ?";     
+		PreparedStatement pstmt5 = connect.prepareStatement(sql5);
+        pstmt5.setString(1, emailCheck);
+        ResultSet resultSet5 = pstmt5.executeQuery();
+		
+		while (resultSet5.next()) {
+		
+		quoteIDCheck = resultSet5.getInt("quoteID");
+		acceptCheck = resultSet5.getString("stat");
+			
+        String sql1 = "SELECT COUNT(*) AS total FROM message WHERE email = ? AND quoteID = ?";            
+        PreparedStatement pstmt1 = connect.prepareStatement(sql1);
+        pstmt1.setString(1, emailCheck);
+        pstmt1.setInt(2, quoteIDCheck);
+        ResultSet resultSet1 = pstmt1.executeQuery();
+        
+        while(resultSet1.next()) {
+        	if (resultSet1.getInt("total") <= 1 && acceptCheck.equals("Accepted")) {
+        		arr[count] = quoteIDCheck;
+        		count++;
+        	}
+        }
+        resultSet1.close();
+		}
+		resultSet5.close();
+		}
+		resultSet.close();
+		
+		
+		for (int i=0; i < count; i++) {
+		
+		String sql2 = "SELECT * FROM Quote WHERE quoteID = ?";
+		PreparedStatement pstmt2 = connect.prepareStatement(sql2);
+		pstmt2.setInt(1, arr[i]);
+		ResultSet resultSet2 = pstmt2.executeQuery();
+         
+		while (resultSet2.next()) {
+            int quoteID = resultSet2.getInt("quoteID");
+            double price = resultSet2.getDouble("price");
+            String timeWindow = resultSet2.getString("timeWindow");
+            String stat = resultSet2.getString("stat");
+            String email = resultSet2.getString("email");
+             
+            quote quotes = new quote(quoteID, price, timeWindow, stat, email);
+            listQuote.add(quotes);
+        }        
+		
+        resultSet2.close();
+		}
+        disconnect();        
+        return listQuote;
+    }
+    
+    public List<quote> oneTree() throws SQLException {
+		List<quote> listQuote = new ArrayList<quote>();
+		int count = 0;
+		int[] arr = new int[100];
+		connect_func();
+		String sql = "SELECT email FROM User";     
+		statement = (Statement) connect.createStatement();
+		ResultSet resultSet = statement.executeQuery(sql);
+		
+		String emailCheck = "";
+		int quoteIDCheck = 0;
+		String acceptCheck = "";
+		
+		while (resultSet.next()) {
+		
+		emailCheck = resultSet.getString("email");
+		
+		String sql5 = "SELECT * FROM Quote WHERE email = ?";     
+		PreparedStatement pstmt5 = connect.prepareStatement(sql5);
+        pstmt5.setString(1, emailCheck);
+        ResultSet resultSet5 = pstmt5.executeQuery();
+		
+		while (resultSet5.next()) {
+		
+		quoteIDCheck = resultSet5.getInt("quoteID");
+		acceptCheck = resultSet5.getString("stat");
+			
+        String sql1 = "SELECT COUNT(*) AS total FROM Tree WHERE email = ? AND quoteID = ?";            
+        PreparedStatement pstmt1 = connect.prepareStatement(sql1);
+        pstmt1.setString(1, emailCheck);
+        pstmt1.setInt(2, quoteIDCheck);
+        ResultSet resultSet1 = pstmt1.executeQuery();
+        
+        while(resultSet1.next()) {
+        	if (resultSet1.getInt("total") == 1 && acceptCheck.equals("Accepted")) {
+        		arr[count] = quoteIDCheck;
+        		count++;
+        	}
+        }
+        resultSet1.close();
+		}
+		resultSet5.close();
+		}
+		resultSet.close();
+		
+		
+		for (int i=0; i < count; i++) {
+		
+		String sql2 = "SELECT * FROM Quote WHERE quoteID = ?";
+		PreparedStatement pstmt2 = connect.prepareStatement(sql2);
+		pstmt2.setInt(1, arr[i]);
+		ResultSet resultSet2 = pstmt2.executeQuery();
+         
+		while (resultSet2.next()) {
+            int quoteID = resultSet2.getInt("quoteID");
+            double price = resultSet2.getDouble("price");
+            String timeWindow = resultSet2.getString("timeWindow");
+            String stat = resultSet2.getString("stat");
+            String email = resultSet2.getString("email");
+             
+            quote quotes = new quote(quoteID, price, timeWindow, stat, email);
+            listQuote.add(quotes);
+        }        
+		
+        resultSet2.close();
+		}
+        disconnect();        
+        return listQuote;
+    }
+    
+    public List<user> prospectiveClients() throws SQLException {
+		List<user> listUser = new ArrayList<user>();
+		int count = 0;
+		String[] arr = new String[100];
+		connect_func();
+		String sql = "SELECT email FROM User";     
+		statement = (Statement) connect.createStatement();
+		ResultSet resultSet = statement.executeQuery(sql);
+		
+		String emailCheck = "";
+		
+		while (resultSet.next()) {
+		
+		emailCheck = resultSet.getString("email");
+			
+        String sql1 = "SELECT COUNT(*) AS total FROM Ord WHERE email = ?";            
+        PreparedStatement pstmt1 = connect.prepareStatement(sql1);
+        pstmt1.setString(1, emailCheck);
+        ResultSet resultSet1 = pstmt1.executeQuery();
+        
+        while(resultSet1.next()) {
+        	if (resultSet1.getInt("total") == 0) {
+        		arr[count] = emailCheck;
+        		count++;
+        	}
+        }
+        resultSet1.close();
+		}
+		resultSet.close();
+		
+		for (int i=0; i < count; i++) {
+		
+		String sql2 = "SELECT * FROM User WHERE email = ?";
+		PreparedStatement pstmt2 = connect.prepareStatement(sql2);
+		pstmt2.setString(1, arr[i]);
+			ResultSet resultSet2 = pstmt2.executeQuery();
+         
+        while (resultSet2.next()) {
+            String email = resultSet2.getString("email");
+            String firstName = resultSet2.getString("firstName");
+            String lastName = resultSet2.getString("lastName");
+            String password = resultSet2.getString("password");
+            String creditCard = resultSet2.getString("creditCard");
+            String adress_street_num = resultSet2.getString("adress_street_num"); 
+            String adress_street = resultSet2.getString("adress_street"); 
+            String adress_city = resultSet2.getString("adress_city"); 
+            String adress_state = resultSet2.getString("adress_state"); 
+            String adress_zip_code = resultSet2.getString("adress_zip_code"); 
+            String phoneNumber = resultSet2.getString("phoneNumber");
+            String role = resultSet2.getString("role");
+            int clientID = resultSet2.getInt("clientID");
+
+             
+            user users = new user(email,firstName, lastName, password, creditCard, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, phoneNumber,role,clientID);
+            listUser.add(users);
+        }        
+        resultSet2.close();
+		}
+        disconnect();        
+        return listUser;
+    }
+    
+    public List<tree> highestTree() throws SQLException {
+		List<tree> listTree = new ArrayList<tree>();
+		int tallest = 0;
+		connect_func();
+		String sql = "SELECT email FROM User";     
+		statement = (Statement) connect.createStatement();
+		ResultSet resultSet = statement.executeQuery(sql);
+		
+		String emailCheck = "";
+		
+		while (resultSet.next()) {
+		
+		emailCheck = resultSet.getString("email");
+			
+        String sql1 = "SELECT height FROM Tree WHERE email = ?";            
+        PreparedStatement pstmt1 = connect.prepareStatement(sql1);
+        pstmt1.setString(1, emailCheck);
+        ResultSet resultSet1 = pstmt1.executeQuery();
+        
+        while(resultSet1.next()) {
+        	if ( resultSet1.getInt("height") > tallest) 
+        		tallest =  resultSet1.getInt("height");
+        }
+        resultSet1.close();
+        
+		}
+		resultSet.close();
+        
+		
+		String sql2 = "SELECT * FROM Tree WHERE height = ?";
+		PreparedStatement pstmt2 = connect.prepareStatement(sql2);
+		pstmt2.setInt(1, tallest);
+		ResultSet resultSet2 = pstmt2.executeQuery();
+         
+		while (resultSet2.next()) {
+        		int treeID = resultSet2.getInt("treeID");
+        		int height = resultSet2.getInt("height");
+        		String nearBuild = resultSet2.getString("nearBuild");
+        		int quoteID = resultSet2.getInt("quoteID");
+        		String email = resultSet2.getString("email");
+             
+        		tree trees = new tree(treeID, height, nearBuild, quoteID, email);
+        		listTree.add(trees);
+        }        
+        resultSet2.close();
+        disconnect();        
+        return listTree;
+    }
+    
+    public List<bill> overdueBills() throws SQLException {
+		List<bill> listBill = new ArrayList<bill>();
+		int count = 0;
+		int[] arr = new int[100];
+		LocalDate current = LocalDate.now();
+		connect_func();
+		String sql = "SELECT quoteID FROM Quote";     
+		statement = (Statement) connect.createStatement();
+		ResultSet resultSet = statement.executeQuery(sql);
+		
+		int quoteIDCheck = 0;
+		String paidCheck = "";
+		
+		while (resultSet.next()) {
+		
+		quoteIDCheck = resultSet.getInt("quoteID");
+		
+		String sql5 = "SELECT stat FROM Bill WHERE quoteID = ?";     
+		PreparedStatement pstmt2 = connect.prepareStatement(sql5);
+        pstmt2.setInt(1, quoteIDCheck);
+        ResultSet resultSet5 = pstmt2.executeQuery();
+		
+		while (resultSet5.next()) {
+			
+		paidCheck = resultSet5.getString("stat");
+			
+        String sql1 = "SELECT timeWindow FROM Quote WHERE quoteID = ?";            
+        PreparedStatement pstmt1 = connect.prepareStatement(sql1);
+        pstmt1.setInt(1, quoteIDCheck);
+        ResultSet resultSet1 = pstmt1.executeQuery();
+        
+        while(resultSet1.next()) {
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
+        	LocalDate date = LocalDate.parse(resultSet1.getString("timeWindow"), formatter);
+        	LocalDate overdue = date.plusWeeks(1);
+        	
+        	if (paidCheck.equals("Unpaid") && current.isAfter(overdue)) {
+        		arr[count] = quoteIDCheck;
+        		count++;
+        	}
+        }
+        resultSet1.close();
+		}
+		resultSet5.close();
+		}
+		resultSet.close();
+        
+		for (int i=0; i < count; i++) {
+		
+		String sql2 = "SELECT * FROM Bill WHERE quoteID = ?";
+		PreparedStatement pstmt2 = connect.prepareStatement(sql2);
+		pstmt2.setInt(1, arr[i]);
+		ResultSet resultSet2 = pstmt2.executeQuery();
+         
+		while (resultSet2.next()) {
+	            int billID = resultSet2.getInt("billID");
+	            double amount = resultSet2.getDouble("amount");
+	            String stat = resultSet2.getString("stat");
+	            int quoteID = resultSet2.getInt("quoteID");
+	            String email = resultSet2.getString("email");
+	             
+	            bill bills = new bill(billID, amount, stat, quoteID, email);
+	            listBill.add(bills);
+	    }        
+	    resultSet2.close();
+		}
+        disconnect();        
+        return listBill;
+    }
+    
+    public List<user> badClients() throws SQLException {
+		List<user> listUser = new ArrayList<user>();
+		int count = 0;
+		int bills = 0;
+		int unpaid = 0;
+		String[] arr = new String[100];
+		LocalDate current = LocalDate.now();
+		connect_func();
+		String sql = "SELECT * FROM Quote";     
+		statement = (Statement) connect.createStatement();
+		ResultSet resultSet = statement.executeQuery(sql);
+		
+		int quoteIDCheck = 0;
+		String paidCheck = "";
+		String emailCheck = "";
+		
+		while (resultSet.next()) {
+		quoteIDCheck = resultSet.getInt("quoteID");
+		emailCheck = resultSet.getString("email");
+		
+		String sql5 = "SELECT COUNT(*) AS total FROM Bill WHERE email = ?";     
+		PreparedStatement pstmt2 = connect.prepareStatement(sql5);
+        pstmt2.setString(1, emailCheck);
+        ResultSet resultSet5 = pstmt2.executeQuery();
+		
+		while (resultSet5.next()) {
+			
+		bills = resultSet5.getInt("total");
+		
+		}
+		resultSet5.close();
+		
+		String sql6 = "SELECT COUNT(*) AS total FROM Bill WHERE email = ? AND stat = ?";     
+		PreparedStatement pstmt3 = connect.prepareStatement(sql6);
+        pstmt3.setString(1, emailCheck);
+        pstmt3.setString(2, "Unpaid");
+        ResultSet resultSet6 = pstmt3.executeQuery();
+		
+		while (resultSet6.next()) {
+			
+		unpaid = resultSet6.getInt("total");
+		paidCheck = "Unpaid";
+		
+		}
+		resultSet6.close();
+			
+        String sql1 = "SELECT timeWindow FROM Quote WHERE quoteID = ?";            
+        PreparedStatement pstmt1 = connect.prepareStatement(sql1);
+        pstmt1.setInt(1, quoteIDCheck);
+        ResultSet resultSet1 = pstmt1.executeQuery();
+        
+        while(resultSet1.next()) {
+        	String timeWindow = resultSet1.getString("timeWindow");
+            if (!timeWindow.isEmpty()) {
+            	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
+            	LocalDate date = LocalDate.parse(timeWindow, formatter);
+            	LocalDate overdue = date.plusWeeks(1);
+        	
+            	if (paidCheck.equals("Unpaid") && current.isAfter(overdue) && bills == unpaid) {
+            		arr[count] = emailCheck;
+            		count++;
+            	}
+            }
+        }
+        resultSet1.close();
+		}
+		resultSet.close();
+        
+		for (int i=0; i < count; i++) {
+		
+		String sql2 = "SELECT * FROM User WHERE email = ?";
+		PreparedStatement pstmt2 = connect.prepareStatement(sql2);
+		pstmt2.setString(1, arr[i]);
+		ResultSet resultSet2 = pstmt2.executeQuery();
+         
+		while (resultSet2.next()) {
+            String email = resultSet2.getString("email");
+            String firstName = resultSet2.getString("firstName");
+            String lastName = resultSet2.getString("lastName");
+            String password = resultSet2.getString("password");
+            String creditCard = resultSet2.getString("creditCard");
+            String adress_street_num = resultSet2.getString("adress_street_num"); 
+            String adress_street = resultSet2.getString("adress_street"); 
+            String adress_city = resultSet2.getString("adress_city"); 
+            String adress_state = resultSet2.getString("adress_state"); 
+            String adress_zip_code = resultSet2.getString("adress_zip_code"); 
+            String phoneNumber = resultSet2.getString("phoneNumber");
+            String role = resultSet2.getString("role");
+            int clientID = resultSet2.getInt("clientID");
+
+             
+            user users = new user(email,firstName, lastName, password, creditCard, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, phoneNumber,role,clientID);
+            listUser.add(users);
+        }        
+        resultSet2.close();
+		}
+        disconnect();        
+        return listUser;
+    }
+    
+    public List<user> goodClients() throws SQLException {
+		List<user> listUser = new ArrayList<user>();
+		int count = 0;
+		String[] arr = new String[100];
+		connect_func();
+		String sql = "SELECT * FROM Quote";     
+		statement = (Statement) connect.createStatement();
+		ResultSet resultSet = statement.executeQuery(sql);
+		
+		int quoteIDCheck = 0;
+		String paidCheck = "";
+		String emailCheck = "";
+		
+		while (resultSet.next()) {
+		
+		quoteIDCheck = resultSet.getInt("quoteID");
+		emailCheck = resultSet.getString("email");
+		
+		String sql5 = "SELECT stat FROM Bill WHERE quoteID = ?";     
+		PreparedStatement pstmt2 = connect.prepareStatement(sql5);
+        pstmt2.setInt(1, quoteIDCheck);
+        ResultSet resultSet5 = pstmt2.executeQuery();
+		
+		while (resultSet5.next()) {
+			
+		paidCheck = resultSet5.getString("stat");
+			
+        String sql1 = "SELECT timeWindow FROM Quote WHERE quoteID = ?";            
+        PreparedStatement pstmt1 = connect.prepareStatement(sql1);
+        pstmt1.setInt(1, quoteIDCheck);
+        ResultSet resultSet1 = pstmt1.executeQuery();
+        
+        while(resultSet1.next()) {
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
+        	LocalDate date = LocalDate.parse(resultSet1.getString("timeWindow"), formatter);
+        	LocalDate overdue = date.plusWeeks(1);
+        	
+        	if (paidCheck.equals("Paid") && date.isBefore(overdue)) {
+        		arr[count] = emailCheck;
+        		count++;
+        	}
+        }
+        resultSet1.close();
+		}
+		resultSet5.close();
+		}
+		resultSet.close();
+        
+		for (int i=0; i < count; i++) {
+			
+			String sql2 = "SELECT * FROM User WHERE email = ?";
+			PreparedStatement pstmt2 = connect.prepareStatement(sql2);
+			pstmt2.setString(1, arr[i]);
+			ResultSet resultSet2 = pstmt2.executeQuery();
+	         
+			while (resultSet2.next()) {
+	            String email = resultSet2.getString("email");
+	            String firstName = resultSet2.getString("firstName");
+	            String lastName = resultSet2.getString("lastName");
+	            String password = resultSet2.getString("password");
+	            String creditCard = resultSet2.getString("creditCard");
+	            String adress_street_num = resultSet2.getString("adress_street_num"); 
+	            String adress_street = resultSet2.getString("adress_street"); 
+	            String adress_city = resultSet2.getString("adress_city"); 
+	            String adress_state = resultSet2.getString("adress_state"); 
+	            String adress_zip_code = resultSet2.getString("adress_zip_code"); 
+	            String phoneNumber = resultSet2.getString("phoneNumber");
+	            String role = resultSet2.getString("role");
+	            int clientID = resultSet2.getInt("clientID");
+
+	             
+	            user users = new user(email,firstName, lastName, password, creditCard, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, phoneNumber,role,clientID);
+	            listUser.add(users);
+	        }        
+	        resultSet2.close();
+			}
+	        disconnect();        
+	        return listUser;
+    }
+    
+    public List<stats> clientStats() throws SQLException {
+		List<stats> listStats = new ArrayList<stats>();
+		int trees = 0;
+		String date;
+		connect_func();
+		String sql = "SELECT email FROM User";     
+		statement = (Statement) connect.createStatement();
+		ResultSet resultSet = statement.executeQuery(sql);
+		
+		String emailCheck = "";
+		int quoteIDCheck = 0;
+		
+		while (resultSet.next()) {
+		
+		emailCheck = resultSet.getString("email");
+		
+		String sql2 = "SELECT quoteID FROM Quote WHERE email = ?";     
+		PreparedStatement pstmt3 = connect.prepareStatement(sql2);
+        pstmt3.setString(1, emailCheck);
+        ResultSet resultSet2 = pstmt3.executeQuery();
+		
+		while (resultSet2.next()) {
+			
+		quoteIDCheck = resultSet2.getInt("quoteID");
+		
+		
+		String sql5 = "SELECT treeID FROM Tree WHERE email = ? AND quoteID = ?";     
+		PreparedStatement pstmt2 = connect.prepareStatement(sql5);
+        pstmt2.setString(1, emailCheck);
+        pstmt2.setInt(2, quoteIDCheck);
+        ResultSet resultSet5 = pstmt2.executeQuery();
+		
+		while (resultSet5.next()) {
+			
+		trees = resultSet5.getInt("treeID");
+			
+        String sql1 = "SELECT timeWindow FROM Quote WHERE quoteID = ?";            
+        PreparedStatement pstmt1 = connect.prepareStatement(sql1);
+        pstmt1.setInt(1, quoteIDCheck);
+        ResultSet resultSet1 = pstmt1.executeQuery();
+        
+        while(resultSet1.next()) {
+        date = resultSet1.getString("timeWindow");
+        
+        if (!date.isEmpty()) {
+        	stats stat = new stats(emailCheck, trees, date);
+        	listStats.add(stat);
+        }
+        
+        }
+        resultSet1.close();
+		}
+		resultSet5.close();
+		}
+		resultSet2.close();
+		}
+		resultSet.close();
+        
+		
+    
+	        disconnect();        
+	        return listStats;
+    }
+    
+    public int[] clientTotal() throws SQLException {
+    	int count = 0;
+		int[] arr = new int[100];
+		String emailCheck = "";
+		connect_func();
+    	String sql7 = "SELECT email FROM User";     
+		statement = (Statement) connect.createStatement();
+		ResultSet resultSet7 = statement.executeQuery(sql7);
+		
+		while (resultSet7.next()) {
+		
+		emailCheck = resultSet7.getString("email");
+			
+		String sql6 = "SELECT * FROM Bill WHERE email = ?";            
+        PreparedStatement pstmt3 = connect.prepareStatement(sql6);
+        pstmt3.setString(1, emailCheck);
+        ResultSet resultSet6 = pstmt3.executeQuery();
+        	
+        while(resultSet6.next()) {
+        	arr[count] += resultSet6.getInt("amount");
+        }
+        count++;
+        resultSet6.close();
+		}
+        resultSet7.close();
+        disconnect(); 
+        return arr;
+    }
+    
+    public int[] clientPaid() throws SQLException {
+    	int count = 0;
+		int[] arr = new int[100];
+		String emailCheck = "";
+		connect_func();
+    	String sql7 = "SELECT email FROM User";     
+		statement = (Statement) connect.createStatement();
+		ResultSet resultSet7 = statement.executeQuery(sql7);
+		
+		while (resultSet7.next()) {
+		
+		emailCheck = resultSet7.getString("email");
+			
+		String sql6 = "SELECT * FROM Bill WHERE email = ?";            
+        PreparedStatement pstmt3 = connect.prepareStatement(sql6);
+        pstmt3.setString(1, emailCheck);
+        ResultSet resultSet6 = pstmt3.executeQuery();
+        
+        
+        
+        while(resultSet6.next()) {
+        	if (resultSet6.getString("stat").equals("Paid")) {
+        		arr[count] += resultSet6.getInt("amount");
+        	}
+        }
+        count++;
+        resultSet6.close();
+		}
+        resultSet7.close();
+        disconnect(); 
+        return arr;
+    }
+    
+    public List<user> clients() throws SQLException {
+    	List<user> listUser = new ArrayList<user>();
+		connect_func();
+    	String sql7 = "SELECT * FROM User";     
+		statement = (Statement) connect.createStatement();
+		ResultSet resultSet7 = statement.executeQuery(sql7);
+		
+		while (resultSet7.next()) {
+		
+        	String email = resultSet7.getString("email");
+            String firstName = resultSet7.getString("firstName");
+            String lastName = resultSet7.getString("lastName");
+            String password = resultSet7.getString("password");
+            String creditCard = resultSet7.getString("creditCard");
+            String adress_street_num = resultSet7.getString("adress_street_num"); 
+            String adress_street = resultSet7.getString("adress_street"); 
+            String adress_city = resultSet7.getString("adress_city"); 
+            String adress_state = resultSet7.getString("adress_state"); 
+            String adress_zip_code = resultSet7.getString("adress_zip_code"); 
+            String phoneNumber = resultSet7.getString("phoneNumber");
+            String role = resultSet7.getString("role");
+            int clientID = resultSet7.getInt("clientID");
+
+             
+            user users = new user(email,firstName, lastName, password, creditCard, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, phoneNumber,role,clientID);
+            listUser.add(users);
+           
+		}
+        resultSet7.close();
+        disconnect(); 
+        return listUser;
+    }
+    
     public void insertQuote(quote quotes) throws SQLException {
     	connect_func();
     	String sql = "insert into Quote(quoteID, price, timeWindow, stat, email) values (?, ?, ?, ?, ?)";
@@ -482,12 +1234,13 @@ public class userDAO
     
     public void insertTree(tree trees) throws SQLException {
     	connect_func();
-    	String sql = "insert into Tree(treeID, height, nearBuild, quoteID) values (?, ?, ?, ?)";
+    	String sql = "insert into Tree(treeID, height, nearBuild, quoteID, email) values (?, ?, ?, ?, ?)";
     	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
     		preparedStatement.setInt(1, trees.getTreeID());
     		preparedStatement.setInt(2, trees.getHeight());
     		preparedStatement.setString(3, trees.getNearBuild());
     		preparedStatement.setInt(4, trees.getQuoteID());
+    		preparedStatement.setString(5, trees.getEmail());
 		
 		preparedStatement.executeUpdate();
         preparedStatement.close();
@@ -815,6 +1568,7 @@ public class userDAO
 					            "height VARCHAR(10) NOT NULL, " +
 					            "nearBuild VARCHAR(3) NOT NULL, " +
 					            "quoteID CHAR(15) NOT NULL, " +
+					            "email VARCHAR(50) NOT NULL, " + 
 					            "PRIMARY KEY (treeID), "+
 					            "FOREIGN KEY (quoteID) REFERENCES Quote(quoteID) "+"); ")};
 	    
@@ -855,10 +1609,10 @@ public class userDAO
 
        String[] TUPLES2 = {("insert into Quote(quoteID, price, timeWindow, stat, email)"+
                 	"values ('68640036', '0.00', '', 'In Progress', 'don@gmail.com'),"+
-                		    "('22568850', '400.00', 'November 10, 2023 12:00pm - 4:00pm', 'Accepted', 'margarita@gmail.com'),"+
-        			    	"('88402860', '1123.50', 'November 5, 2023 8:00am - 3:00pm', 'Accepted', 'jo@gmail.com'),"+
-        			   	 	"('18996146', '1417.50', 'November 1, 2023 9:00am - 3:00pm', 'Accepted', 'wallace@gmail.com'),"+
-        			   	 	"('96922139', '273.00', 'November 19, 2023 12:00pm - 3:00pm', 'In Progress', 'jo@gmail.com'),"+
+                		    "('22568850', '400.00', 'November 10, 2023', 'Accepted', 'margarita@gmail.com'),"+
+        			    	"('88402860', '1123.50', 'November 5, 2023', 'Accepted', 'jo@gmail.com'),"+
+        			   	 	"('18996146', '1417.50', 'November 1, 2023', 'Accepted', 'wallace@gmail.com'),"+
+        			   	 	"('96922139', '273.00', 'November 19, 2023', 'In Progress', 'jo@gmail.com'),"+
         			   	 	"('85329432', '0.00', '', 'In Progress', 'amelia@gmail.com'),"+
         			   	 	"('74311516', '0.00', '', 'In Progress', 'sophie@gmail.com'),"+
         		   		 	"('90773260', '0.00', '', 'Rejected', 'angelo@gmail.com'),"+
@@ -879,19 +1633,19 @@ public class userDAO
         				    "('12', 'We are not allowed to do work in your area right now', '90773260', 'david@gmail.com'),"+
         				    "('13', 'We can not work in your area at the moment', '40893246', 'david@gmail.com');")};
         		  			
-        String[] TUPLES4 = {("insert into Tree(treeID, height, nearBuild, quoteID)"+
-            		"values ('80802474', '25', 'yes', '68640036'),"+
-    			    		"('63365023', '40', 'no', '22568850'),"+
-    			    		"('11793601', '35', 'no', '88402860'),"+
-    			    		"('79718814', '40', 'no', '88402860'),"+
-    			    		"('40338681', '32', 'no', '88402860'),"+
-    			    	 	"('94023358', '65', 'no', '18996146'),"+
-    			    	 	"('47339106', '70', 'no', '18996146'),"+
-    			    	 	"('11841387', '55', 'yes', '96922139'),"+
-    			   		 	"('35257725', '38', 'no', '85329432'),"+
-    			   		 	"('13197890', '26', 'yes', '74311516'),"+
-    			   		 	"('61048581', '60', 'yes', '90773260'),"+
-    			   		 	"('40179016', '50', 'no', '40893246');")};
+        String[] TUPLES4 = {("insert into Tree(treeID, height, nearBuild, quoteID, email)"+
+            		"values ('80802474', '25', 'yes', '68640036', 'don@gmail.com'),"+
+    			    		"('63365023', '40', 'no', '22568850', 'margarita@gmail.com'),"+
+    			    		"('11793601', '35', 'no', '88402860', 'jo@gmail.com'),"+
+    			    		"('79718814', '40', 'no', '88402860', 'jo@gmail.com'),"+
+    			    		"('40338681', '32', 'no', '88402860', 'jo@gmail.com'),"+
+    			    	 	"('94023358', '65', 'no', '18996146', 'wallace@gmail.com'),"+
+    			    	 	"('47339106', '70', 'no', '18996146', 'wallace@gmail.com'),"+
+    			    	 	"('11841387', '55', 'yes', '96922139', 'jo@gmail.com'),"+
+    			   		 	"('35257725', '38', 'no', '85329432', 'amelia@gmail.com'),"+
+    			   		 	"('13197890', '26', 'yes', '74311516', 'sophie@gmail.com'),"+
+    			   		 	"('61048581', '60', 'yes', '90773260', 'angelo@gmail.com'),"+
+    			   		 	"('40179016', '50', 'no', '40893246', 'rudy@gmail.com');")};
         				   
         String[] TUPLES5 = {("insert into Ord(ordID, stat, quoteID, email)"+
             		"values ('38035457', 'In Progress', '22568850', 'margarita@gmail.com'),"+

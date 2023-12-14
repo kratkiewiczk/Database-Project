@@ -62,9 +62,9 @@
             </c:forEach>
         </table>
                
-        <div>
-		<a href="Statistics.jsp"target ="_self" >View Statistics</a><br><br> 
-		</div> 
+        <form action="stats" method="post">
+            <input type="submit" value="View Statistics" />
+        </form>
                 
         <div>
 		<a href="DavidSmith.jsp"target ="_self" >Other Page</a><br><br> 

@@ -19,8 +19,8 @@
             </tr>
                 <tr style="text-align:center">
                     <td><%= request.getParameter("quoteID") %></td>
-                    <td><input type="text" name="price" autofocus></td>
-                    <td><input type="text" name="timeWindow" autofocus></td>
+                    <td><input type="text" name="price" value="0000.00" onfocus="this.value=''"></td>
+                    <td><input type="text" name="timeWindow" value="Month 00, 0000" onfocus="this.value=''"></td>
         </table>
               
         <button type="submit" name="submit" value="respond">Confirm Edits</button> 
