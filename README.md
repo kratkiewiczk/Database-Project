@@ -1,4 +1,5 @@
-# Database-Project   
+# Database-Project  
+FINAL INSTRUCTIONS AT BOTTOM OF DOCUMENT!
 Instructions for project part 1 are:   
 Download Eclipse 2023 for Web Developers for optimal results.   
 Download the latest version of Java  
