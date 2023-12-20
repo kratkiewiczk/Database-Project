@@ -117,5 +117,6 @@ Download MYSQL server
 Download MYSQL workbench and set up an admin user within workbench named "john" with password "john1234"     
 Download the project and import it into Eclipse    
 Ensure it is set up properly     
-Start with the rootView.jsp and right-click and do run on server, then press initialize database (this should automatically communicate with the database to set everything up)
-Once that is done you can start on the login page and try out all the functionality
+Start with the rootView.jsp and right-click and do run on server, then press initialize database (this should automatically communicate with the database to set everything up)     
+Once that is done you can start on the login page and try out all the functionality    
+Demo Video: https://www.youtube.com/watch?v=28_pBzY0UnA    
